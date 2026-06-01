@@ -1,4 +1,4 @@
-const { Receta, Ingredientes, RecetaIngrediente } = require('../models');
+const { Receta, Ingrediente, RecetaIngrediente } = require('../models');
 
 
 const getAll = async (req, res) => {
@@ -49,8 +49,8 @@ const update = async (req, res) => {
     if (!receta) {
       return res.status(404).json({ error: 'Receta no encontrada' });
     }
-    const { titulo, preparacion } = req.body;  // ← cambiar
-    await receta.update({ titulo, preparacion });  // ← cambiar
+    const { titulo, preparacion } = req.body;  
+    await receta.update({ titulo, preparacion });  
     res.json(receta);
   } catch (error) {
     res.status(500).json({ error: error.message });
