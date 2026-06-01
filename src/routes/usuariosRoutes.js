@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Usuario } = require('../models');  // ← Cambiar esta línea
+const { Usuario } = require('../src/models');  
 const bcrypt = require('bcryptjs');
 
 // Registrar nuevo usuario

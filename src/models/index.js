@@ -6,7 +6,7 @@ const Sequelize = require('sequelize');
 const process = require('process');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../../config/config.json')[env];
+const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
 let sequelize;
@@ -37,8 +37,16 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
-db.Receta.belongsToMany(db.Ingrediente, { through: 'receta_ingredientes', foreignKey: 'receta_id' });
-db.Ingrediente.belongsToMany(db.Receta, { through: 'receta_ingredientes', foreignKey: 'ingrediente_id' });
+db.Receta.belongsToMany(db.Ingrediente, { 
+  through: 'receta_ingredientes', 
+  foreignKey: 'receta_id',
+  timestamps: false
+});
+db.Ingrediente.belongsToMany(db.Receta, { 
+  through: 'receta_ingredientes', 
+  foreignKey: 'ingrediente_id',
+  timestamps: false
+});
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

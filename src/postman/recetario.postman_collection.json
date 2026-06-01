@@ -1,0 +1,213 @@
+{
+  "info": {
+    "_postman_id": "b23a87b7-5d38-461f-8c84-1f9658f79726",
+    "name": "recetario",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54512805",
+    "_collection_link": "https://go.postman.co/collection/54512805-b23a87b7-5d38-461f-8c84-1f9658f79726?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "receta",
+      "item": [
+        {
+          "name": "ver recetas",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "ver receta por id con ingredientes",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "guardar receta",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"titulo\": \"Tortilla de papas\",\r\n  \"preparacion\": \"Batir los huevos, cortar las papas en rodajas, freír las papas, mezclar con los huevos, cocinar en sartén.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/recetas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "recetas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "editar receta",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"titulo\": \"Tortilla españolaaaaaaa\",\r\n  \"preparacion\": \"Batir los huevos, cortar las papas en rodajas finas, freír las papas en aceite de oliva, mezclar con los huevos, cocinar en sartén por ambos lados.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/recetas/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "recetas",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "eliminar receta",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/recetas/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "recetas",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ingrediente",
+      "item": [
+        {
+          "name": "ver ingredientes",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "ver ingrediente por id",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "añadir ingrediente",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Mantequilla\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/ingredientes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "ingredientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "editar ingrediente",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Huevo orgánico\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/ingredientes/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "ingredientes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "eliminar ingrediente",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/ingredientes/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "ingredientes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
