@@ -1,6 +1,5 @@
 const { Receta, Ingrediente, RecetaIngrediente } = require('../models');
 
-
 const getAll = async (req, res) => {
   try {
     const recetas = await Receta.findAll();
@@ -9,7 +8,6 @@ const getAll = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 const getById = async (req, res) => {
   try {
@@ -25,32 +23,29 @@ const getById = async (req, res) => {
   }
 };
 
-
 // CREAR 
-
 const create = async (req, res) => {
   try {
-    const { titulo, preparacion } = req.body;  
+    const { titulo, preparacion, url_imagen } = req.body;
     if (!titulo) {
       return res.status(400).json({ error: 'El título es obligatorio' });
     }
-    const receta = await Receta.create({ titulo, preparacion });  
+    const receta = await Receta.create({ titulo, preparacion, url_imagen });
     res.status(201).json(receta);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-//ACTUALIZAR
-
+// ACTUALIZAR
 const update = async (req, res) => {
   try {
     const receta = await Receta.findByPk(req.params.id);
     if (!receta) {
       return res.status(404).json({ error: 'Receta no encontrada' });
     }
-    const { titulo, preparacion } = req.body;  
-    await receta.update({ titulo, preparacion });  
+    const { titulo, preparacion, url_imagen } = req.body;
+    await receta.update({ titulo, preparacion, url_imagen });
     res.json(receta);
   } catch (error) {
     res.status(500).json({ error: error.message });

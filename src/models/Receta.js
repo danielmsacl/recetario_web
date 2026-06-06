@@ -14,6 +14,10 @@ module.exports = (sequelize) => {
     preparacion: {
       type: DataTypes.TEXT,
       allowNull: false
+    },
+    url_imagen: {
+      type: DataTypes.STRING(500),
+      allowNull: true
     }
   }, {
     tableName: 'recetas',
