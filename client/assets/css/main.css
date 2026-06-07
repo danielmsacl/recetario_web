@@ -1,0 +1,153 @@
+/* Variables de color */
+:root {
+  --primary: #e67e22;
+  --primary-dark: #d35400;
+  --secondary: #2c3e50;
+  --gray-light: #f8f9fa;
+  --gray: #6c757d;
+  --white: #ffffff;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Reset y estilos globales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--gray-light);
+  color: var(--secondary);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: var(--white);
+  padding: 20px 0;
+  box-shadow: var(--shadow);
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: 2rem;
+  text-align: center;
+}
+
+/* Título de sección */
+.section-title {
+  font-size: 1.8rem;
+  color: var(--secondary);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Grid de recetas */
+.recetas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+/* Tarjeta de receta */
+.receta-card {
+  background: var(--white);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.receta-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover);
+}
+
+.receta-card-content {
+  padding: 20px;
+}
+
+.receta-titulo {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 15px;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 8px;
+  display: inline-block;
+}
+
+.receta-preparacion {
+  color: var(--gray);
+  line-height: 1.6;
+  margin: 15px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.btn-ver {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: var(--white);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: transform 0.2s ease;
+}
+
+.btn-ver:hover {
+  transform: scale(1.05);
+}
+
+/* Estados de carga y error */
+.loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.2rem;
+  color: var(--gray);
+}
+
+.error {
+  text-align: center;
+  padding: 50px;
+  color: #e74c3c;
+  background: #fdeaea;
+  border-radius: 10px;
+  margin: 20px;
+}
+
+/* Footer */
+.footer {
+  background: var(--secondary);
+  color: var(--white);
+  text-align: center;
+  padding: 20px;
+  margin-top: 50px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .recetas-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .section-title {
+    font-size: 1.4rem;
+  }
+}
