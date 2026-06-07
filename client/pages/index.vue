@@ -1,62 +1,87 @@
 <template>
-  <div>
-    <!-- Header -->
-    <header class="header">
-      <div class="container">
-        <h1>🍽️ Mi Recetario</h1>
-      </div>
-    </header>
-
-    <!-- Contenido principal -->
-    <main class="container">
-      <h2 class="section-title">📖 Nuestras Recetas</h2>
+  <div class="login-container">
+    <div class="login-card">
+      <h1>🍽️ Mi Recetario</h1>
+      <h2>Iniciar Sesión</h2>
       
-      <div v-if="pending" class="loading">
-        ⏳ Cargando deliciosas recetas...
-      </div>
-      
-      <div v-else-if="error" class="error">
-        ❌ Error al cargar recetas: {{ error.message }}
-      </div>
-      
-      <div v-else class="recetas-grid">
-        <div v-for="receta in recetas" :key="receta.id" class="receta-card">
-          <!-- Imagen -->
-          <img 
-            v-if="receta.url_imagen"
-            :src="receta.url_imagen" 
-            :alt="receta.titulo"
-            class="receta-imagen"
-          >
-          <div v-else class="receta-imagen-placeholder">
-            🍳 Sin imagen
-          </div>
-          
-          <!-- Contenido -->
-          <div class="receta-card-content">
-            <h3 class="receta-titulo">{{ receta.titulo }}</h3>
-            <p class="receta-preparacion">{{ receta.preparacion }}</p>
-            <button @click="verReceta(receta.id)" class="btn-ver">
-              Ver receta completa →
-            </button>
-          </div>
+      <form @submit.prevent="handleLogin">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" v-model="email" required placeholder="correo@ejemplo.com">
         </div>
-      </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="container">
-        <p>© 2026 Mi Recetario | Hecho con ❤️ y buena comida</p>
-      </div>
-    </footer>
+        
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" v-model="password" required placeholder="********">
+        </div>
+        
+        <button type="submit" class="btn-login" :disabled="cargando">
+          {{ cargando ? 'Ingresando...' : 'Ingresar' }}
+        </button>
+        
+        <p v-if="error" class="error-message">{{ error }}</p>
+      </form>
+      
+      <button @click="entrarSinCuenta" class="btn-guest">
+        Entrar sin cuenta
+      </button>
+      
+      <p class="registro-link">
+        ¿No tienes cuenta? 
+        <a href="#" @click.prevent="irARegistro">Regístrate aquí</a>
+      </p>
+    </div>
   </div>
 </template>
 
 <script setup>
-const { data: recetas, pending, error } = await useFetch('http://localhost:3001/api/recetas')
+import { ref } from 'vue'
 
-const verReceta = (id) => {
-  console.log('Ver receta:', id)
+const email = ref('')
+const password = ref('')
+const cargando = ref(false)
+const error = ref('')
+
+const handleLogin = async () => {
+  cargando.value = true
+  error.value = ''
+  
+  try {
+    const response = await fetch('http://localhost:3001/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email.value,
+        password: password.value
+      })
+    })
+    
+    const data = await response.json()
+    
+    if (response.ok) {
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('usuario', JSON.stringify(data.usuario))
+      navigateTo('/principal')
+    } else {
+      error.value = data.error || 'Error al iniciar sesión'
+    }
+  } catch (err) {
+    error.value = 'Error de conexión con el servidor'
+  } finally {
+    cargando.value = false
+  }
+}
+
+const entrarSinCuenta = () => {
+  // Guardar un token de invitado
+  localStorage.setItem('token', 'guest')
+  localStorage.setItem('usuario', JSON.stringify({ nombre: 'Invitado', email: 'guest@recetario.com' }))
+  navigateTo('/principal')
+}
+
+const irARegistro = () => {
+  navigateTo('/registro')
 }
 </script>
+
+
