@@ -14,6 +14,8 @@ Aplicación web para gestión de recetas con autenticación JWT, roles de usuari
 
 ```bash
 # Instalar dependencias
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+actualizar node
 npm install
 
 npm install express sequelize mysql2 cors bcryptjs jsonwebtoken dotenv
@@ -26,6 +28,8 @@ cp .env.example .env
 # terminal 1
 cd client 
 npm install
+npm install @oxc-parser/binding-win32-x64-msvc
+npm rebuild better-sqlite3
 npm run dev
 
 # terminal 2 
