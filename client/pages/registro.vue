@@ -2,9 +2,14 @@
   <div class="login-container">
     <div class="login-card">
       <h1>🍽️ Recetas deL Sur </h1>
-      <h2>Iniciar Sesión</h2>
+      <h2>Crear Cuenta</h2>
       
-      <form @submit.prevent="handleLogin">
+      <form @submit.prevent="handleRegistro">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" v-model="nombre" required placeholder="Tu nombre">
+        </div>
+        
         <div class="form-group">
           <label>Email</label>
           <input type="email" v-model="email" required placeholder="correo@ejemplo.com">
@@ -12,23 +17,19 @@
         
         <div class="form-group">
           <label>Contraseña</label>
-          <input type="password" v-model="password" required placeholder="********">
+          <input type="password" v-model="password" required placeholder="******">
         </div>
         
         <button type="submit" class="btn-login" :disabled="cargando">
-          {{ cargando ? 'Ingresando...' : 'Ingresar' }}
+          {{ cargando ? 'Registrando...' : 'Registrarse' }}
         </button>
         
         <p v-if="error" class="error-message">{{ error }}</p>
       </form>
       
-      <button @click="entrarSinCuenta" class="btn-guest">
-        Entrar sin cuenta
-      </button>
-      
       <p class="registro-link">
-        ¿No tienes cuenta? 
-        <a href="#" @click.prevent="irARegistro">Regístrate aquí</a>
+        ¿Ya tienes cuenta? 
+        <a href="#" @click.prevent="irALogin">Inicia sesión aquí</a>
       </p>
     </div>
   </div>
@@ -37,20 +38,22 @@
 <script setup>
 import { ref } from 'vue'
 
+const nombre = ref('')
 const email = ref('')
 const password = ref('')
 const cargando = ref(false)
 const error = ref('')
 
-const handleLogin = async () => {
+const handleRegistro = async () => {
   cargando.value = true
   error.value = ''
   
   try {
-    const response = await fetch('http://localhost:3001/api/auth/login', {
+    const response = await fetch('http://localhost:3001/api/auth/registro', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        nombre: nombre.value,
         email: email.value,
         password: password.value
       })
@@ -59,11 +62,9 @@ const handleLogin = async () => {
     const data = await response.json()
     
     if (response.ok) {
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('usuario', JSON.stringify(data.usuario))
-      navigateTo('/principal')
+      navigateTo('/')
     } else {
-      error.value = data.error || 'Error al iniciar sesión'
+      error.value = data.error || 'Error al registrarse'
     }
   } catch (err) {
     error.value = 'Error de conexión con el servidor'
@@ -72,16 +73,7 @@ const handleLogin = async () => {
   }
 }
 
-const entrarSinCuenta = () => {
-  // Guardar un token de invitado
-  localStorage.setItem('token', 'guest')
-  localStorage.setItem('usuario', JSON.stringify({ nombre: 'Invitado', email: 'guest@recetario.com' }))
-  navigateTo('/principal')
-}
-
-const irARegistro = () => {
-  navigateTo('/registro')
+const irALogin = () => {
+  navigateTo('/')
 }
 </script>
-
-

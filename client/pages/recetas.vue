@@ -7,7 +7,7 @@
           <button @click="volver" class="btn-volver">
             ← Volver
           </button>
-          <h1>🍽️ Mi Recetario</h1>
+          <h1>🍽️ Recetas deL Sur </h1>
         </div>
       </div>
     </header>

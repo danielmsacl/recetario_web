@@ -14,7 +14,19 @@
           "name": "ver recetas",
           "request": {
             "method": "GET",
-            "header": []
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/recetas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "api",
+                "recetas"
+              ]
+            }
           },
           "response": []
         },
@@ -22,7 +34,20 @@
           "name": "ver receta por id con ingredientes",
           "request": {
             "method": "GET",
-            "header": []
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/recetas/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "api",
+                "recetas",
+                "4"
+              ]
+            }
           },
           "response": []
         },
@@ -33,7 +58,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"titulo\": \"Tortilla de papas\",\r\n  \"preparacion\": \"Batir los huevos, cortar las papas en rodajas, freír las papas, mezclar con los huevos, cocinar en sartén.\"\r\n}",
+              "raw": "{\r\n  \"titulo\": \"Tortilla de papas\",\r\n  \"preparacion\": \"Batir los huevos, cortar las papas en rodajas, freír las papas, mezclar con los huevos, cocinar en sartén.\",\r\n  \"url_imagen\":\"\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -41,12 +66,12 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3000/api/recetas",
+              "raw": "http://localhost:3001/api/recetas",
               "protocol": "http",
               "host": [
                 "localhost"
               ],
-              "port": "3000",
+              "port": "3001",
               "path": [
                 "api",
                 "recetas"
@@ -62,7 +87,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"titulo\": \"Tortilla españolaaaaaaa\",\r\n  \"preparacion\": \"Batir los huevos, cortar las papas en rodajas finas, freír las papas en aceite de oliva, mezclar con los huevos, cocinar en sartén por ambos lados.\"\r\n}",
+              "raw": "  {\r\n        \"titulo\": \"Tallarines con queso rallado\",\r\n        \"preparacion\": \"hervir awa, hacer los tallarines , toma tallarines y rallale queso\",\r\n        \"url_imagen\": \"http://192.168.1.10:3001/uploads/recetas/tallarines_queso.jpg\"\r\n    }",
               "options": {
                 "raw": {
                   "language": "json"
@@ -70,16 +95,16 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3000/api/recetas/2",
+              "raw": "http://localhost:3001/api/recetas/5",
               "protocol": "http",
               "host": [
                 "localhost"
               ],
-              "port": "3000",
+              "port": "3001",
               "path": [
                 "api",
                 "recetas",
-                "2"
+                "5"
               ]
             }
           },
@@ -91,12 +116,12 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/api/recetas/2",
+              "raw": "http://localhost:3001/api/recetas/2",
               "protocol": "http",
               "host": [
                 "localhost"
               ],
-              "port": "3000",
+              "port": "3001",
               "path": [
                 "api",
                 "recetas",
@@ -115,7 +140,19 @@
           "name": "ver ingredientes",
           "request": {
             "method": "GET",
-            "header": []
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/ingredientes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "api",
+                "ingredientes"
+              ]
+            }
           },
           "response": []
         },
@@ -123,7 +160,20 @@
           "name": "ver ingrediente por id",
           "request": {
             "method": "GET",
-            "header": []
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/ingredientes/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "api",
+                "ingredientes",
+                "2"
+              ]
+            }
           },
           "response": []
         },
@@ -134,7 +184,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"nombre\": \"Mantequilla\"\r\n}",
+              "raw": "{\r\n  \"nombre\": \"huevos\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -142,12 +192,12 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3000/api/ingredientes",
+              "raw": "http://localhost:3001/api/ingredientes",
               "protocol": "http",
               "host": [
                 "localhost"
               ],
-              "port": "3000",
+              "port": "3001",
               "path": [
                 "api",
                 "ingredientes"
@@ -163,7 +213,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"nombre\": \"Huevo orgánico\"\r\n}",
+              "raw": "{\r\n  \"nombre\": \"Huevo de gallina contenta\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -171,12 +221,12 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3000/api/ingredientes/1",
+              "raw": "http://localhost:3001/api/ingredientes/1",
               "protocol": "http",
               "host": [
                 "localhost"
               ],
-              "port": "3000",
+              "port": "3001",
               "path": [
                 "api",
                 "ingredientes",
@@ -192,15 +242,110 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/api/ingredientes/1",
+              "raw": "http://localhost:3001/api/ingredientes/6",
               "protocol": "http",
               "host": [
                 "localhost"
               ],
-              "port": "3000",
+              "port": "3001",
               "path": [
                 "api",
                 "ingredientes",
+                "6"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "usuarios",
+      "item": [
+        {
+          "name": "obtener usuarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/auth/usuarios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "api",
+                "auth",
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "obtener usuario por id",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "registrar usuario",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Usuario Test\",\r\n  \"email\": \"test@ejemplo.com\",\r\n  \"password\": \"123456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/auth/registro",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "api",
+                "auth",
+                "registro"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "actualizar rol usuario",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"rol\": \"desarrollador\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/auth/usuarios/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "api",
+                "auth",
+                "usuarios",
                 "1"
               ]
             }
@@ -208,6 +353,14 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "login prueba",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
     }
   ]
 }
