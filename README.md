@@ -1,4 +1,29 @@
-# recetario
+# 🍽️ Recetario
+
+Aplicación web para gestión de recetas con autenticación JWT, roles de usuario y panel de administración.
+
+## Requisitos previos
+
+- Node.js (v18 o superior)
+- MySQL (v8 o superior)
+- npm
+
+# Ejecucion local
+
+```bash
+# Instalar dependencias
+npm install
+
+# Configurar variables de entorno
+cp .env.example .env
+# Editar .env con tus datos
+
+# Iniciar el servidor
+node src/app.js
+
+# Iniciar el servidor de desarrollo
+cd client
+npm run dev
 
 ## variables de entorno
 
@@ -18,21 +43,3 @@
 2. Completar `.env` con tus valores
 3. No subir `.env` al repositorio
 
-## Ejecución local
-
-### Backend (Express)
-
-```bash
-# Instalar dependencias
-npm install
-
-# Configurar variables de entorno
-cp .env.example .env
-# Editar .env con tus datos
-
-# Iniciar el servidor
-node src/app.js
-
-# Iniciar el servidor de desarrollo
-cd client
-npm run dev
