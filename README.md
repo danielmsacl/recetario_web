@@ -8,7 +8,9 @@ Aplicación web para gestión de recetas con autenticación JWT, roles de usuari
 - MySQL (v8 o superior)
 - npm
 
-# Ejecucion local
+## Ejecución local
+
+### Backend (Express)
 
 ```bash
 # Instalar dependencias
@@ -20,10 +22,7 @@ cp .env.example .env
 
 # Iniciar el servidor
 node src/app.js
-
-# Iniciar el servidor de desarrollo
-cd client
-npm run dev
+```
 
 ## variables de entorno
 
