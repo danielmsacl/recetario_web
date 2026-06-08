@@ -10,7 +10,7 @@
   "production": {
     "username": "root",
     "password": "",
-    "database": "recetario_prod",
+    "database": "recetario",
     "host": "localhost",
     "dialect": "mysql"
   }

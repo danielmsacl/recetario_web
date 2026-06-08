@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <div class="login-card">
-      <h1>🍽️ Recetas deL Sur </h1>
+      <h1>🍽️ Recetas Extravagantes 🌶️💩 </h1>
       <h2>Iniciar Sesión</h2>
       
       <form @submit.prevent="handleLogin">

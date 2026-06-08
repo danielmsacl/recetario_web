@@ -16,12 +16,21 @@ Aplicación web para gestión de recetas con autenticación JWT, roles de usuari
 # Instalar dependencias
 npm install
 
+npm install express sequelize mysql2 cors bcryptjs jsonwebtoken dotenv
+
 # Configurar variables de entorno
 cp .env.example .env
 # Editar .env con tus datos
 
 # Iniciar el servidor
+# terminal 1
+cd client 
+npm install
+npm run dev
+
+# terminal 2 
 node src/app.js
+
 ```
 
 ## variables de entorno

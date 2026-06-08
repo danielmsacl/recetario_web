@@ -1,4 +1,6 @@
-/* Variables de color */
+/* ============================================ */
+/* VARIABLES GLOBALES */
+/* ============================================ */
 :root {
   --primary: #e67e22;
   --primary-dark: #d35400;
@@ -28,8 +30,24 @@ body {
   margin: 0 auto;
   padding: 0 20px;
 }
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
-/* Header */
+#__nuxt, #__layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+}
+/* ============================================ */
+/* HEADER (todas las páginas) */
+/* ============================================ */
 .header {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: var(--white);
@@ -43,7 +61,20 @@ body {
   text-align: center;
 }
 
-/* Título de sección */
+/* ============================================ */
+/* FOOTER (todas las páginas) */
+/* ============================================ */
+.footer {
+  background: var(--secondary);
+  color: var(--white);
+  text-align: center;
+  padding: 20px;
+  margin-top: 50px;
+}
+
+/* ============================================ */
+/* PÁGINA: recetas.vue (listado de recetas) */
+/* ============================================ */
 .section-title {
   font-size: 1.8rem;
   color: var(--secondary);
@@ -51,7 +82,6 @@ body {
   text-align: center;
 }
 
-/* Grid de recetas */
 .recetas-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -59,7 +89,6 @@ body {
   margin-bottom: 50px;
 }
 
-/* Tarjeta de receta */
 .receta-card {
   background: var(--white);
   border-radius: 15px;
@@ -94,6 +123,16 @@ body {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  white-space: pre-wrap;  /* Respeta los saltos de línea */
+  font-family: inherit;
+}
+
+.receta-imagen {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  background-color: #f5f5f5;
+  padding: 10px;
 }
 
 .btn-ver {
@@ -128,68 +167,19 @@ body {
   margin: 20px;
 }
 
-/* Footer */
-.footer {
-  background: var(--secondary);
-  color: var(--white);
-  text-align: center;
-  padding: 20px;
-  margin-top: 50px;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .recetas-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .header h1 {
-    font-size: 1.5rem;
-  }
-  
-  .section-title {
-    font-size: 1.4rem;
-  }
-}
-/* Hero (página principal) */
-.hero {
-  text-align: center;
-  padding: 80px 20px;
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  border-radius: 20px;
-  margin: 40px 0;
-}
-
-.hero-title {
-  font-size: 2.5rem;
-  color: var(--secondary);
-  margin-bottom: 15px;
-}
-
-.hero-subtitle {
-  font-size: 1.2rem;
-  color: var(--gray);
-  margin-bottom: 30px;
-}
-
-.btn-hero {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: white;
-  border: none;
-  padding: 15px 40px;
-  font-size: 1.1rem;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.btn-hero:hover {
-  transform: scale(1.05);
-}
+/* ============================================ */
+/* PÁGINA: principal.vue y recetas.vue (header con botón volver) */
+/* ============================================ */
 .header-content {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  position: relative;
+}
+
+.header-content h1 {
+  flex: 1;
+  text-align: center;
+  margin: 0;
 }
 
 .btn-volver {
@@ -206,18 +196,10 @@ body {
 .btn-volver:hover {
   background: rgba(255, 255, 255, 0.3);
 }
-.receta-imagen {
-  width: 100%;
-  height: 200px;
-  object-fit: contain;  /* Cambia de 'cover' a 'contain' */
-  background-color: #f5f5f5;
-  padding: 10px;
-}
-.receta-preparacion {
-  white-space: pre-wrap;  /* Respeta los saltos de línea */
-  font-family: inherit;
-  line-height: 1.6;
-}
+
+/* ============================================ */
+/* PÁGINA: login.vue y registro.vue */
+/* ============================================ */
 .login-container {
   min-height: 100vh;
   display: flex;
@@ -284,6 +266,7 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s;
+  margin-bottom: 15px;
 }
 
 .btn-login:hover:not(:disabled) {
@@ -293,6 +276,24 @@ body {
 .btn-login:disabled {
   opacity: 0.7;
   cursor: not-allowed;
+}
+
+.btn-guest {
+  width: 100%;
+  padding: 12px;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background 0.2s;
+}
+
+.btn-guest:hover {
+  background: #5a6268;
 }
 
 .error-message {
@@ -316,6 +317,9 @@ body {
   text-decoration: underline;
 }
 
+/* ============================================ */
+/* PÁGINA: principal.vue (solo) - Hero y panel desarrollador */
+/* ============================================ */
 .hero {
   text-align: center;
   padding: 80px 20px;
@@ -351,153 +355,6 @@ body {
   transform: scale(1.05);
 }
 
-/* Header con contenido (para el botón logout) */
-.header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.header-content h1 {
-  flex: 1;
-  text-align: center;
-  margin: 0;
-  position: absolute;
-  left: 0;
-  right: 0;
-  pointer-events: none;
-}
-.btn-logout {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.2s ease;
-}
-
-.btn-logout:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-.login-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-}
-
-.login-card {
-  background: white;
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-}
-
-.login-card h1 {
-  color: #e67e22;
-  margin-bottom: 10px;
-}
-
-.login-card h2 {
-  color: #2c3e50;
-  margin-bottom: 30px;
-  font-size: 1.5rem;
-}
-
-.form-group {
-  margin-bottom: 20px;
-  text-align: left;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  color: #2c3e50;
-  font-weight: 500;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #e67e22;
-}
-
-.btn-login {
-  width: 100%;
-  padding: 12px;
-  background: linear-gradient(135deg, #e67e22, #d35400);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 15px;
-}
-
-.btn-login:hover:not(:disabled) {
-  transform: translateY(-2px);
-}
-
-.btn-login:disabled {
-  opacity: 0.7;
-}
-
-.btn-guest {
-  width: 100%;
-  padding: 12px;
-  background: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 20px;
-  transition: background 0.2s;
-}
-
-.btn-guest:hover {
-  background: #5a6268;
-}
-
-.error-message {
-  color: #e74c3c;
-  margin-top: 15px;
-}
-
-.registro-link {
-  margin-top: 20px;
-  color: #6c757d;
-}
-
-.registro-link a {
-  color: #e67e22;
-  text-decoration: none;
-}
-
-.registro-link a:hover {
-  text-decoration: underline;
-}
-.login-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-}
 .user-info {
   display: flex;
   align-items: center;
@@ -505,6 +362,20 @@ body {
   background: rgba(255, 255, 255, 0.15);
   padding: 8px 16px;
   border-radius: 30px;
+}
+
+.btn-logout {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .badge-dev {
@@ -551,56 +422,22 @@ body {
   transform: translateY(-2px);
 }
 
-.hero {
-  text-align: center;
-  padding: 80px 20px;
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  border-radius: 20px;
-  margin: 40px 0;
-}
-
-.hero-title {
-  font-size: 2.5rem;
-  color: var(--secondary);
-  margin-bottom: 15px;
-}
-
-.hero-subtitle {
-  font-size: 1.2rem;
-  color: var(--gray);
-  margin-bottom: 30px;
-}
-
-.btn-hero {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: white;
-  border: none;
-  padding: 15px 40px;
-  font-size: 1.1rem;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.btn-hero:hover {
-  transform: scale(1.05);
-}
-
-.btn-logout {
-  background: rgba(255, 255, 255, 0.25);
-  color: white;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-logout:hover {
-  background: rgba(255, 255, 255, 0.4);
-}
-
+/* ============================================ */
+/* MEDIA QUERIES (Responsive) */
+/* ============================================ */
 @media (max-width: 768px) {
+  .recetas-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .section-title {
+    font-size: 1.4rem;
+  }
+
   .header-content {
     flex-direction: column;
     text-align: center;
@@ -609,106 +446,4 @@ body {
   .hero-title {
     font-size: 1.8rem;
   }
-}
-.login-card {
-  background: white;
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-}
-
-.login-card h1 {
-  color: #e67e22;
-  margin-bottom: 10px;
-}
-
-.login-card h2 {
-  color: #2c3e50;
-  margin-bottom: 30px;
-  font-size: 1.5rem;
-}
-
-.form-group {
-  margin-bottom: 20px;
-  text-align: left;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  color: #2c3e50;
-  font-weight: 500;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #e67e22;
-}
-
-.btn-login {
-  width: 100%;
-  padding: 12px;
-  background: linear-gradient(135deg, #e67e22, #d35400);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 15px;
-}
-
-.btn-login:hover:not(:disabled) {
-  transform: translateY(-2px);
-}
-
-.btn-login:disabled {
-  opacity: 0.7;
-}
-
-.btn-guest {
-  width: 100%;
-  padding: 15px;
-  background: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 20px;
-}
-
-.btn-guest:hover {
-  background: #5a6268;
-}
-
-.error-message {
-  color: #e74c3c;
-  margin-top: 15px;
-}
-
-.registro-link {
-  margin-top: 20px;
-  color: #6c757d;
-}
-
-.registro-link a {
-  color: #e67e22;
-  text-decoration: none;
-}
-
-.registro-link a:hover {
-  text-decoration: underline;
 }
