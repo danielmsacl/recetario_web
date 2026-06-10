@@ -1,35 +1,66 @@
 <template>
-  <div class="login-container">
-    <div class="login-card">
-      <h1>🍽️ Recetas Extravagantes 🌶️💩 </h1>
-      <h2>Iniciar Sesión</h2>
-      
-      <form @submit.prevent="handleLogin">
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" v-model="email" required placeholder="correo@ejemplo.com">
+  <div class="login-body">
+    <div :class="['container', { 'right-panel-active': isRightPanelActive }]" id="container">
+      <!-- Sign Up Form -->
+      <div class="form-container sign-up-container">
+        <form @submit.prevent="handleRegistro">
+          <h1>Crear cuenta</h1>
+          <div class="social-container">
+            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+          <span>o usa tu email para registrarte</span>
+          <input type="text" v-model="registro.nombre" placeholder="Nombre" required />
+          <input type="email" v-model="registro.email" placeholder="Email" required />
+          <input type="password" v-model="registro.password" placeholder="Contraseña" required />
+          <button type="submit" :disabled="cargandoRegistro">
+            {{ cargandoRegistro ? 'Registrando...' : 'Registrarse' }}
+          </button>
+          <p v-if="errorRegistro" class="error-message">{{ errorRegistro }}</p>
+        </form>
+      </div>
+
+      <!-- Sign In Form -->
+      <div class="form-container sign-in-container">
+        <form @submit.prevent="handleLogin">
+          <h1>Ingresar</h1>
+          <div class="social-container">
+            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+          <span></span>
+          <input type="email" v-model="login.email" placeholder="Email" required />
+          <input type="password" v-model="login.password" placeholder="Contraseña" required />
+          <a href="#">¿Olvidaste tu contraseña?</a>
+          <button type="submit" :disabled="cargandoLogin">
+            {{ cargandoLogin ? 'Ingresando...' : 'Ingresar' }}
+          </button>
+          <button type="button" @click="entrarSinCuenta" class="btn-guest">
+            Entrar sin cuenta
+          </button>
+          <p v-if="errorLogin" class="error-message">{{ errorLogin }}</p>
+        </form>
+      </div>
+
+      <!-- Overlay -->
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-left">
+            <h1>¡Bienvenido de vuelta!</h1>
+            <p>Para mantener la conexión, inicia sesión con tus datos personales</p>
+            <button class="ghost" @click="isRightPanelActive = false">Ingresar</button>
+          </div>
+          <div class="overlay-panel overlay-right">
+            <h1>BIENVENIDO A</h1>
+            <h1>🍽️ Recetas Extravagantes</h1>
+            <h1>🌶️💩</h1>
+            <p></p>
+            <button class="ghost" @click="isRightPanelActive = true">Registrarse</button>
+          </div>
         </div>
-        
-        <div class="form-group">
-          <label>Contraseña</label>
-          <input type="password" v-model="password" required placeholder="********">
-        </div>
-        
-        <button type="submit" class="btn-login" :disabled="cargando">
-          {{ cargando ? 'Ingresando...' : 'Ingresar' }}
-        </button>
-        
-        <p v-if="error" class="error-message">{{ error }}</p>
-      </form>
-      
-      <button @click="entrarSinCuenta" class="btn-guest">
-        Entrar sin cuenta
-      </button>
-      
-      <p class="registro-link">
-        ¿No tienes cuenta? 
-        <a href="#" @click.prevent="irARegistro">Regístrate aquí</a>
-      </p>
+      </div>
     </div>
   </div>
 </template>
@@ -37,22 +68,34 @@
 <script setup>
 import { ref } from 'vue'
 
-const email = ref('')
-const password = ref('')
-const cargando = ref(false)
-const error = ref('')
+const isRightPanelActive = ref(false)
+
+const login = ref({
+  email: '',
+  password: ''
+})
+const cargandoLogin = ref(false)
+const errorLogin = ref('')
+
+const registro = ref({
+  nombre: '',
+  email: '',
+  password: ''
+})
+const cargandoRegistro = ref(false)
+const errorRegistro = ref('')
 
 const handleLogin = async () => {
-  cargando.value = true
-  error.value = ''
+  cargandoLogin.value = true
+  errorLogin.value = ''
   
   try {
     const response = await fetch('http://localhost:3001/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email: email.value,
-        password: password.value
+        email: login.value.email,
+        password: login.value.password
       })
     })
     
@@ -63,25 +106,77 @@ const handleLogin = async () => {
       localStorage.setItem('usuario', JSON.stringify(data.usuario))
       navigateTo('/principal')
     } else {
-      error.value = data.error || 'Error al iniciar sesión'
+      errorLogin.value = data.error || 'Credenciales inválidas'
     }
   } catch (err) {
-    error.value = 'Error de conexión con el servidor'
+    errorLogin.value = 'Error de conexión con el servidor'
   } finally {
-    cargando.value = false
+    cargandoLogin.value = false
+  }
+}
+
+const handleRegistro = async () => {
+  cargandoRegistro.value = true
+  errorRegistro.value = ''
+  
+  try {
+    const response = await fetch('http://localhost:3001/api/auth/registro', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre: registro.value.nombre,
+        email: registro.value.email,
+        password: registro.value.password
+      })
+    })
+    
+    const data = await response.json()
+    
+    if (response.ok) {
+      isRightPanelActive.value = false
+      registro.value = { nombre: '', email: '', password: '' }
+      alert('¡Registro exitoso! Ahora puedes iniciar sesión.')
+    } else {
+      errorRegistro.value = data.error || 'Error al registrarse'
+    }
+  } catch (err) {
+    errorRegistro.value = 'Error de conexión con el servidor'
+  } finally {
+    cargandoRegistro.value = false
   }
 }
 
 const entrarSinCuenta = () => {
-  // Guardar un token de invitado
   localStorage.setItem('token', 'guest')
-  localStorage.setItem('usuario', JSON.stringify({ nombre: 'Invitado', email: 'guest@recetario.com' }))
+  localStorage.setItem('usuario', JSON.stringify({ 
+    id: 0,
+    nombre: 'Invitado', 
+    email: 'invitado@recetario.com',
+    rol: 'invitado'
+  }))
   navigateTo('/principal')
-}
-
-const irARegistro = () => {
-  navigateTo('/registro')
 }
 </script>
 
+<style scoped>
+@import '~/assets/css/login.css';
 
+.btn-guest {
+  width: 100%;
+  padding: 12px;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.btn-guest:hover {
+  background: #5a6268;
+  transform: scale(0.98);
+}
+</style>
