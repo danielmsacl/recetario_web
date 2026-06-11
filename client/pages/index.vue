@@ -33,7 +33,7 @@
           <span></span>
           <input type="email" v-model="login.email" placeholder="Email" required />
           <input type="password" v-model="login.password" placeholder="Contraseña" required />
-          <a href="#">¿Olvidaste tu contraseña?</a>
+          <a href="#" @click.prevent="irARecuperar">¿Olvidaste tu contraseña?</a>
           <button type="submit" :disabled="cargandoLogin">
             {{ cargandoLogin ? 'Ingresando...' : 'Ingresar' }}
           </button>
@@ -156,27 +156,12 @@ const entrarSinCuenta = () => {
   }))
   navigateTo('/principal')
 }
+
+const irARecuperar = () => {
+  navigateTo('/recuperar_pass')
+}
 </script>
 
 <style scoped>
 @import '~/assets/css/login.css';
-
-.btn-guest {
-  width: 100%;
-  padding: 12px;
-  background: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: all 0.3s ease;
-}
-
-.btn-guest:hover {
-  background: #5a6268;
-  transform: scale(0.98);
-}
 </style>

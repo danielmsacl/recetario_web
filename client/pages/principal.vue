@@ -1,6 +1,5 @@
 <template>
   <div class="app-wrapper">
-    <!-- Header -->
     <header class="header">
       <div class="container">
         <div class="header-content">
@@ -16,7 +15,6 @@
       </div>
     </header>
 
-    <!-- Contenido principal -->
     <main class="main-content">
       <div class="container">
         <div class="hero">
@@ -27,7 +25,6 @@
           </button>
         </div>
 
-        <!-- Panel de Desarrollador (solo visible para desarrolladores) -->
         <div v-if="esDesarrollador" class="dev-panel">
           <h3>🛠️ Panel de Desarrollador</h3>
           <div class="dev-actions">
@@ -38,7 +35,6 @@
       </div>
     </main>
 
-    <!-- Footer (siempre abajo) -->
     <footer class="footer">
       <div class="container">
         <p>© 2026 Recetas Extravagantes | Hecho con ❤️ y buena comida</p>
@@ -47,12 +43,16 @@
   </div>
 </template>
 
+<style scoped>
+@import '~/assets/css/principal.css';
+@import '~/assets/css/main.css';
+</style>
+
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 
 const usuarioActual = ref({ nombre: 'Invitado', email: '', rol: 'usuario' })
 
-// Computed para saber si es desarrollador
 const esDesarrollador = computed(() => {
   return usuarioActual.value.rol === 'desarrollador' || usuarioActual.value.rol === 'admin'
 })
@@ -74,7 +74,6 @@ const cerrarSesion = () => {
   navigateTo('/')
 }
 
-// Funciones del panel de desarrollador
 const irAdminRecetas = () => {
   navigateTo('/admin/recetas')
 }

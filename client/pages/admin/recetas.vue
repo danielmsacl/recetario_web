@@ -24,7 +24,7 @@
             <td>{{ receta.titulo }}</td>
             <td class="preparacion-cell">{{ receta.preparacion.substring(0, 50) }}...</td>
             <td class="acciones">
-              <button @click="editarReceta(receta.id)" class="btn-editar">✏️ Editar</button>
+              <button @click="abrirModalEditar(receta)" class="btn-editar">✏️ Editar</button>
               <button @click="eliminarReceta(receta.id)" class="btn-eliminar">🗑️ Eliminar</button>
             </td>
           </tr>
@@ -32,119 +32,181 @@
       </table>
     </div>
 
-    <button @click="crearReceta" class="btn-crear">+ Crear Nueva Receta</button>
+    <button @click="abrirModalCrear" class="btn-crear">+ Crear Nueva Receta</button>
+
+    <div v-if="modalCrearAbierto" class="modal" @click.self="cerrarModalCrear">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>➕ Nueva Receta</h2>
+          <button @click="cerrarModalCrear" class="btn-cerrar">×</button>
+        </div>
+        
+        <form @submit.prevent="guardarNueva" class="modal-form">
+          <div class="form-group">
+            <label>Título</label>
+            <input type="text" v-model="nuevaReceta.titulo" required />
+          </div>
+          
+          <div class="form-group">
+            <label>Preparación</label>
+            <textarea v-model="nuevaReceta.preparacion" rows="8" required></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label>URL de la imagen</label>
+            <input type="text" v-model="nuevaReceta.url_imagen" placeholder="http://localhost:3001/uploads/..." />
+          </div>
+          
+          <div class="modal-actions">
+            <button type="submit" class="btn-guardar" :disabled="creando">
+              {{ creando ? 'Creando...' : '✨ Crear Receta' }}
+            </button>
+            <button type="button" @click="cerrarModalCrear" class="btn-cancelar">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL DE EDITAR -->
+    <div v-if="modalEditarAbierto" class="modal" @click.self="cerrarModalEditar">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>✏️ Editar Receta</h2>
+          <button @click="cerrarModalEditar" class="btn-cerrar">×</button>
+        </div>
+        
+        <form @submit.prevent="guardarEdicion" class="modal-form">
+          <div class="form-group">
+            <label>Título</label>
+            <input type="text" v-model="recetaEditando.titulo" required />
+          </div>
+          
+          <div class="form-group">
+            <label>Preparación</label>
+            <textarea v-model="recetaEditando.preparacion" rows="8" required></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label>URL de la imagen</label>
+            <input type="text" v-model="recetaEditando.url_imagen" placeholder="http://localhost:3001/uploads/..." />
+          </div>
+          
+          <div class="modal-actions">
+            <button type="submit" class="btn-guardar" :disabled="guardando">
+              {{ guardando ? 'Guardando...' : '💾 Guardar Cambios' }}
+            </button>
+            <button type="button" @click="cerrarModalEditar" class="btn-cancelar">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
 const { data: recetas, pending, error, refresh } = await useFetch('http://localhost:3001/api/recetas')
+
+const modalCrearAbierto = ref(false)
+const creando = ref(false)
+const nuevaReceta = ref({
+  titulo: '',
+  preparacion: '',
+  url_imagen: ''
+})
+
+const modalEditarAbierto = ref(false)
+const guardando = ref(false)
+const recetaEditando = ref({
+  id: null,
+  titulo: '',
+  preparacion: '',
+  url_imagen: ''
+})
 
 const volver = () => {
   navigateTo('/principal')
 }
 
-const editarReceta = (id) => {
-  navigateTo(`/admin/recetas/${id}/editar`)
+const abrirModalCrear = () => {
+  nuevaReceta.value = { titulo: '', preparacion: '', url_imagen: '' }
+  modalCrearAbierto.value = true
+}
+
+const cerrarModalCrear = () => {
+  modalCrearAbierto.value = false
+  creando.value = false
+}
+
+const guardarNueva = async () => {
+  creando.value = true
+  try {
+    const response = await fetch('http://localhost:3001/api/recetas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(nuevaReceta.value)
+    })
+    
+    if (response.ok) {
+      cerrarModalCrear()
+      refresh()
+      alert('✅ Receta creada correctamente')
+    } else {
+      alert('❌ Error al crear la receta')
+    }
+  } catch (err) {
+    alert('❌ Error de conexión')
+  } finally {
+    creando.value = false
+  }
+}
+
+const abrirModalEditar = (receta) => {
+  recetaEditando.value = { ...receta }
+  modalEditarAbierto.value = true
+}
+
+const cerrarModalEditar = () => {
+  modalEditarAbierto.value = false
+  guardando.value = false
+}
+
+const guardarEdicion = async () => {
+  guardando.value = true
+  try {
+    const response = await fetch(`http://localhost:3001/api/recetas/${recetaEditando.value.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        titulo: recetaEditando.value.titulo,
+        preparacion: recetaEditando.value.preparacion,
+        url_imagen: recetaEditando.value.url_imagen
+      })
+    })
+    
+    if (response.ok) {
+      cerrarModalEditar()
+      refresh()
+      alert('✅ Receta actualizada correctamente')
+    } else {
+      alert('❌ Error al actualizar')
+    }
+  } catch (err) {
+    alert('❌ Error de conexión')
+  } finally {
+    guardando.value = false
+  }
 }
 
 const eliminarReceta = async (id) => {
   if (confirm('¿Estás seguro de eliminar esta receta?')) {
     await fetch(`http://localhost:3001/api/recetas/${id}`, { method: 'DELETE' })
-    refresh() // Recargar la lista
+    refresh()
   }
-}
-
-const crearReceta = () => {
-  navigateTo('/admin/recetas/nueva')
 }
 </script>
 
 <style scoped>
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.admin-header {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-.btn-volver {
-  background: #6c757d;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.tabla-recetas {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.tabla-recetas th,
-.tabla-recetas td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-.tabla-recetas th {
-  background: #e67e22;
-  color: white;
-}
-
-.preparacion-cell {
-  max-width: 300px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.acciones {
-  display: flex;
-  gap: 10px;
-}
-
-.btn-editar {
-  background: #3498db;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.btn-eliminar {
-  background: #e74c3c;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.btn-crear {
-  background: #27ae60;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 20px;
-  font-size: 1rem;
-}
-
-.btn-crear:hover {
-  background: #219a52;
-}
+@import '~/assets/css/admin_recetas.css';
 </style>
