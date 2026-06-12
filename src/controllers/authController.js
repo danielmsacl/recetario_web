@@ -1,6 +1,12 @@
-const { Usuario } = require('../models');
+const { Usuario, PasswordResetToken } = require('../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const { Op } = require('sequelize'); 
+
+//-------------------------------------------------------------------------------------
+// LOGIN/REGISTRO/FUNCIONES DE USUARIOS
+//-------------------------------------------------------------------------------------
 
 // Registro
 const registrar = async (req, res) => {
@@ -136,11 +142,114 @@ const remove = async (req, res) => {
   }
 };
 
+//-------------------------------------------------------------------------------
+// Solicitar restablecimiento de contraseña
+//-------------------------------------------------------------------------------
+
+const solicitarReset = async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({ error: 'El email es obligatorio' });
+    }
+    
+    const usuario = await Usuario.findOne({ where: { email } });
+    if (!usuario) {
+      return res.json({ mensaje: 'Si el email existe, recibirás un enlace de restablecimiento' });
+    }
+    
+    await PasswordResetToken.destroy({ where: { email } });
+    
+    const token = crypto.randomBytes(32).toString('hex');
+    const expires_at = new Date();
+    expires_at.setHours(expires_at.getHours() + 1); 
+    
+    await PasswordResetToken.create({
+      email,
+      token,
+      expires_at
+    });
+    
+    console.log(`🔐 Token de restablecimiento para ${email}: ${token}`);
+    console.log(`🔗 URL: http://localhost:3000/restablecer/${token}`);
+    
+    res.json({ 
+      mensaje: 'Si el email existe, recibirás un enlace de restablecimiento',
+      dev_token: process.env.NODE_ENV === 'development' ? token : undefined
+    });
+    
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const verificarToken = async (req, res) => {
+  try {
+    const { token } = req.params;
+    
+    const resetToken = await PasswordResetToken.findOne({ 
+      where: { 
+        token,
+        expires_at: { [Op.gt]: new Date() } 
+      }
+    });
+    
+    if (!resetToken) {
+      return res.status(400).json({ error: 'Token inválido o expirado' });
+    }
+    
+    res.json({ valido: true, email: resetToken.email });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const restablecerPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+    
+    if (!password || password.length < 6) {
+      return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
+    }
+    
+    const resetToken = await PasswordResetToken.findOne({ 
+      where: { 
+        token,
+        expires_at: { [Op.gt]: new Date() }
+      }
+    });
+    
+    if (!resetToken) {
+      return res.status(400).json({ error: 'Token inválido o expirado' });
+    }
+    
+    const usuario = await Usuario.findOne({ where: { email: resetToken.email } });
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    
+    usuario.password = password;
+    await usuario.save();
+    
+    await PasswordResetToken.destroy({ where: { id: resetToken.id } });
+    
+    res.json({ mensaje: 'Contraseña actualizada correctamente' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// EXPORTS
 module.exports = { 
   registrar, 
   login, 
   getUsuarios, 
   getUsuarioById,
   update,
-  remove
+  remove,
+  solicitarReset,
+  verificarToken,
+  restablecerPassword
 };

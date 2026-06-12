@@ -5,33 +5,28 @@
       <h1>🔐 Recuperar Contraseña</h1>
       <p>Ingresa tu email y te enviaremos un enlace para restablecer tu contraseña</p>
       
-      <form @submit.prevent="handleRecuperar" v-if="!mostrarMensaje">
+      <form @submit.prevent="solicitarReset">
         <div class="form-group">
           <label>Email</label>
           <input type="email" v-model="email" placeholder="tu@email.com" required />
         </div>
         
         <button type="submit" :disabled="cargando">
-          {{ cargando ? 'Enviando...' : 'Recuperar contraseña' }}
+          {{ cargando ? 'Enviando...' : 'Enviar enlace' }}
         </button>
         
-        <p v-if="error" class="error-message">{{ error }}</p>
+        <p v-if="mensaje" class="mensaje">{{ mensaje }}</p>
+        <p v-if="errorMsg" class="error-message">{{ errorMsg }}</p>
+        
+        <!-- Mostrar enlace si hay token de desarrollo -->
+        <div v-if="devToken" class="dev-link">
+          <p>🔗 <strong>Enlace de prueba:</strong></p>
+          <a :href="`http://localhost:3000/restablecer/${devToken}`" target="_blank">
+            http://localhost:3000/restablecer/{{ devToken }}
+          </a>
+          <button @click="copiarEnlace" class="btn-copiar">📋 Copiar enlace</button>
+        </div>
       </form>
-      
-      <!-- Mensaje con imagen del gato -->
-      <div v-else class="mensaje-container">
-        <img 
-          :src="imagenGato" 
-          alt="Gato triste"
-          class="gato-imagen"
-          @error="imagenError = true"
-        />
-        <h2 class="mensaje-titulo">⚠️ Olvidar la contraseña es de tontos ⚠️</h2>
-        <p class="mensaje-texto">
-          a comer mas pasas
-        </p>
-        <button @click="reiniciar" class="btn-reintentar">Intentar de nuevo</button>
-      </div>
     </div>
   </div>
 </template>
@@ -41,26 +36,36 @@ import { ref } from 'vue'
 
 const email = ref('')
 const cargando = ref(false)
-const error = ref('')
-const mostrarMensaje = ref(false)
-const imagenError = ref(false)
+const mensaje = ref('')
+const errorMsg = ref('')
+const devToken = ref('')
 
-// Ruta de la imagen del gato
-const imagenGato = 'http://localhost:3001/uploads/gato.jpg'
-
-const handleRecuperar = async () => {
+const solicitarReset = async () => {
   cargando.value = true
-  error.value = ''
+  mensaje.value = ''
+  errorMsg.value = ''
+  devToken.value = ''
   
   try {
-    // Simulación de envío (siempre muestra el error con el gato)
-    setTimeout(() => {
-      cargando.value = false
-      mostrarMensaje.value = true
-    }, 1000)
+    const response = await fetch('http://localhost:3001/api/auth/solicitar-reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.value })
+    })
     
+    const data = await response.json()
+    
+    if (response.ok) {
+      mensaje.value = data.mensaje
+      if (data.dev_token) {
+        devToken.value = data.dev_token
+      }
+    } else {
+      errorMsg.value = data.error || 'Error al enviar la solicitud'
+    }
   } catch (err) {
-    error.value = 'Error de conexión con el servidor'
+    errorMsg.value = 'Error de conexión con el servidor'
+  } finally {
     cargando.value = false
   }
 }
@@ -69,9 +74,10 @@ const volver = () => {
   navigateTo('/')
 }
 
-const reiniciar = () => {
-  mostrarMensaje.value = false
-  email.value = ''
+const copiarEnlace = () => {
+  const enlace = `http://localhost:3000/restablecer/${devToken.value}`
+  navigator.clipboard.writeText(enlace)
+  alert('Enlace copiado al portapapeles')
 }
 </script>
 
@@ -81,23 +87,16 @@ const reiniciar = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f6f5f7, #e9ecef);
+  background: linear-gradient(135deg, #4a0e4e 0%, #2d0a2e 100%);
 }
 
 .recuperar-card {
   background: white;
   padding: 40px;
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   width: 100%;
   max-width: 500px;
-  text-align: center;
   position: relative;
-}
-
-.recuperar-card h1 {
-  color: #E67E22;
-  margin-bottom: 20px;
 }
 
 .btn-volver {
@@ -106,19 +105,25 @@ const reiniciar = () => {
   left: 20px;
   background: none;
   border: none;
-  font-size: 1rem;
-  color: #E67E22;
+  color: #e67e22;
   cursor: pointer;
-  padding: 5px;
+  font-size: 1rem;
 }
 
-.btn-volver:hover {
-  text-decoration: underline;
+.recuperar-card h1 {
+  color: #e67e22;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.recuperar-card p {
+  color: #666;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .form-group {
   margin-bottom: 20px;
-  text-align: left;
 }
 
 .form-group label {
@@ -138,13 +143,13 @@ const reiniciar = () => {
 
 .form-group input:focus {
   outline: none;
-  border-color: #E67E22;
+  border-color: #e67e22;
 }
 
 button[type="submit"] {
   width: 100%;
   padding: 12px;
-  background: #E67E22;
+  background: linear-gradient(135deg, #e67e22, #d35400);
   color: white;
   border: none;
   border-radius: 8px;
@@ -162,47 +167,42 @@ button[type="submit"]:disabled {
   opacity: 0.7;
 }
 
+.mensaje {
+  margin-top: 15px;
+  color: #27ae60;
+  text-align: center;
+  white-space: pre-line;
+}
+
 .error-message {
   margin-top: 15px;
   color: #e74c3c;
-}
-
-/* Estilos del mensaje con gato */
-.mensaje-container {
   text-align: center;
 }
 
-.gato-imagen {
-  max-width: 200px;
-  margin: 20px auto;
-  display: block;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+.dev-link {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  word-break: break-all;
 }
 
-.mensaje-titulo {
-  color: #e74c3c;
-  font-size: 1.5rem;
-  margin: 20px 0 10px;
+.dev-link p {
+  margin-bottom: 10px;
+  color: #333;
 }
 
-.mensaje-texto {
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: 25px;
+.dev-link a {
+  color: #e67e22;
+  font-size: 0.8rem;
 }
 
-.btn-reintentar {
+.btn-copiar {
+  margin-top: 10px;
   background: #6c757d;
-  color: white;
-  border: none;
-  padding: 10px 25px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.btn-reintentar:hover {
-  background: #5a6268;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  width: auto;
 }
 </style>

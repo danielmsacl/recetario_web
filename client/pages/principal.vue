@@ -19,7 +19,7 @@
       <div class="container">
         <div class="hero">
           <h2 class="hero-title">Bienvenido, {{ usuarioActual.nombre }}!</h2>
-          <p class="hero-subtitle">Descubre las mejores recetas caseras del sur</p>
+          <p class="hero-subtitle">Descubre las combinaciones mas extravagantes de sabores y texturas</p>
           <button @click="irARecetas" class="btn-hero">
             Ver Recetario →
           </button>
@@ -37,7 +37,7 @@
 
     <footer class="footer">
       <div class="container">
-        <p>© 2026 Recetas Extravagantes | Hecho con ❤️ y buena comida</p>
+        <p>© 2026 Recetas Extravagantes | Hecho con ❤️ y el buen gusto</p>
       </div>
     </footer>
   </div>

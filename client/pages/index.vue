@@ -5,12 +5,7 @@
       <div class="form-container sign-up-container">
         <form @submit.prevent="handleRegistro">
           <h1>Crear cuenta</h1>
-          <div class="social-container">
-            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-          </div>
-          <span>o usa tu email para registrarte</span>
+          <span></span>
           <input type="text" v-model="registro.nombre" placeholder="Nombre" required />
           <input type="email" v-model="registro.email" placeholder="Email" required />
           <input type="password" v-model="registro.password" placeholder="Contraseña" required />
@@ -25,11 +20,6 @@
       <div class="form-container sign-in-container">
         <form @submit.prevent="handleLogin">
           <h1>Ingresar</h1>
-          <div class="social-container">
-            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-          </div>
           <span></span>
           <input type="email" v-model="login.email" placeholder="Email" required />
           <input type="password" v-model="login.password" placeholder="Contraseña" required />

@@ -28,10 +28,10 @@ h1 {
 .btn-guest {
   width: auto;
   padding: 10px 25px;
-  background: #6c757d;
+  background: #6c89a1;
   color: white;
-  border: none;
-  border-radius: 20px;
+  border: 15px;
+  border-radius: 25px;
   font-size: 12px;
   font-weight: bold;
   cursor: pointer;
@@ -58,6 +58,10 @@ p {
 
 span {
   font-size: 12px;
+  display: block;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
 }
 
 a {
@@ -150,27 +154,31 @@ input {
 
 .login-card h1 {
   color: #e67e22;
-  margin-bottom: 10px;
+  margin-bottom: 25px;
 }
 
 .login-card h2 {
-  color: #2c3e50;
+  color: #0c3c6d;
   margin-bottom: 30px;
   font-size: 1.5rem;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 35px;
   text-align: left;
 }
-
+.form-group input {
+  padding: 14px 14px;  
+}
 .form-group label {
   display: block;
   margin-bottom: 5px;
   color: #2c3e50;
   font-weight: 500;
 }
-
+.btn-login, .btn-guest {
+  padding: 16px 16px;
+}
 .form-group input {
   width: 100%;
   padding: 12px;
@@ -187,7 +195,7 @@ input {
 
 .btn-login {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   background: linear-gradient(135deg, #e67e22, #d35400);
   color: white;
   border: none;
@@ -196,7 +204,7 @@ input {
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
 }
 
 .btn-login:hover:not(:disabled) {
@@ -209,21 +217,21 @@ input {
 }
 
 .btn-guest {
-  width: 100%;
+  width: 80%;
   padding: 12px;
   background: #6c757d;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 25px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  margin-bottom: 20px;
+  margin-top: 15px;
   transition: background 0.2s;
 }
 
 .btn-guest:hover {
-  background: #5a6268;
+  background: #0f2a3f;
 }
 
 .error-message {

@@ -1,40 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { Usuario } = require('../src/models');  
-const bcrypt = require('bcryptjs');
+const authController = require('../controllers/authController');
+const authMiddleware = require('../middlewares/auth');
 
-// Registrar nuevo usuario
-router.post('/registro', async (req, res) => {
-  const { nombre, email, password } = req.body;
+// Rutas 
+router.post('/registro', authController.registrar);
+router.post('/login', authController.login);
 
-  if (!nombre || !email || !password) {
-    return res.status(400).json({ error: 'Todos los campos son obligatorios' });
-  }
-
-  const usuarioExistente = await Usuario.findOne({ where: { email } });
-  if (usuarioExistente) {
-    return res.status(409).json({ error: 'El email ya está registrado' });
-  }
-
-  if (password.length < 6) {
-    return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
-  }
-
-  try {
-    const nuevoUsuario = await Usuario.create({
-      nombre,
-      email,
-      password
-    });
-
-    res.status(201).json({
-      id: nuevoUsuario.id,
-      nombre: nuevoUsuario.nombre,
-      email: nuevoUsuario.email
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+// Rutas protegidas con JWT
+router.get('/usuarios', authMiddleware, authController.getUsuarios);
+router.get('/usuarios/:id', authMiddleware, authController.getUsuarioById);
+router.put('/usuarios/:id', authMiddleware, authController.update);
+router.delete('/usuarios/:id', authMiddleware, authController.remove);
 
 module.exports = router;

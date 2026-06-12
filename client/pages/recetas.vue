@@ -55,7 +55,7 @@
       <!-- Footer -->
       <footer class="footer">
         <div class="container">
-          <p>© 2026 Recetas Extravagantes | Hecho con ❤️ y buena comida</p>
+          <p>© 2026 Recetas Extravagantes | Hecho con ❤️ y el buen gusto</p>
         </div>
       </footer>
     </div>
