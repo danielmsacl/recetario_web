@@ -14,6 +14,9 @@ app.use('/uploads', express.static('src/uploads'));
 app.use(express.json());
 app.use(cors())
 app.use('/api/auth', authRoutes);
+app.use(cors({
+  origin: 'https://recetario-web-six.vercel.app/'  // Tu URL de Vercel
+}));
 
 app.get('/', (req, res) => {
   res.json({ mensaje: 'Hola mundo' });
