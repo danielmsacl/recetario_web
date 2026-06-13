@@ -9,13 +9,11 @@ export default defineNuxtConfig({
   ],
   // Configuración para redirigir peticiones de la API en producción
   routeRules: {
-    // Redirige todas las peticiones que comiencen con /api
     '/api/**': {
-      proxy: 'https://web-production-ccf1.up.railway.app/api/**'
+      proxy: 'https://TU_BACKEND_RAILWAY.up.railway.app/api/**'
     },
-    // Redirige todas las peticiones de archivos subidos
     '/uploads/**': {
-      proxy: 'https://web-production-ccf1.up.railway.app/uploads/**'
+      proxy: 'https://TU_BACKEND_RAILWAY.up.railway.app/uploads/**'
     }
   }
 })
