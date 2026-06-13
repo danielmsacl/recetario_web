@@ -17,6 +17,10 @@ module.exports = {
       preparacion: {
         type: Sequelize.TEXT,
         allowNull: false
+      },
+      url_imagen: {
+        type: Sequelize.STRING(150),
+        allowNull: true
       }
     });
   },

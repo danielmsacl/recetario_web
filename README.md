@@ -55,3 +55,22 @@ node src/app.js
 2. Completar `.env` con tus valores
 3. No subir `.env` al repositorio
 
+## Cambios de esquema (GEN-12)
+
+### AGREGAR CAMPO - dificultad en recetas
+
+**Fecha:** 2026-06-12  
+**Tipo:** AC (Agregar Campo)
+
+**Descripción:**  
+Se agregó el campo `dificultad` a la tabla `recetas` para clasificar las recetas por nivel de dificultad.
+
+**Valores posibles:** `fácil` 😇, `media` 😐, `difícil` 👹  
+**Valor por defecto:** `media`
+
+**Migración:** `20260612225304-add-dificultad-to-recetas.js`
+
+**Comandos para aplicar:**
+```bash
+npx sequelize-cli db:migrate
+```

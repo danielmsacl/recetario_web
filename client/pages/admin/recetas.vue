@@ -14,7 +14,7 @@
           <tr>
             <th>ID</th>
             <th>Título</th>
-            <th>Preparación</th>
+            <th>Dificultad</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -22,18 +22,23 @@
           <tr v-for="receta in recetas" :key="receta.id">
             <td>{{ receta.id }}</td>
             <td>{{ receta.titulo }}</td>
-            <td class="preparacion-cell">{{ receta.preparacion.substring(0, 50) }}...</td>
+            <td class="dificultad-cell">
+              <span :class="['dificultad-badge', getDificultadClass(receta.dificultad)]">
+                {{ getDificultadIcon(receta.dificultad) }} {{ receta.dificultad || 'media' }}
+              </span>
+            </td>
             <td class="acciones">
               <button @click="abrirModalEditar(receta)" class="btn-editar">✏️ Editar</button>
               <button @click="eliminarReceta(receta.id)" class="btn-eliminar">🗑️ Eliminar</button>
-            </td>
-          </tr>
+             </td>
+           </tr>
         </tbody>
       </table>
     </div>
 
     <button @click="abrirModalCrear" class="btn-crear">+ Crear Nueva Receta</button>
 
+    <!-- MODAL CREAR -->
     <div v-if="modalCrearAbierto" class="modal" @click.self="cerrarModalCrear">
       <div class="modal-content">
         <div class="modal-header">
@@ -43,12 +48,21 @@
         
         <form @submit.prevent="guardarNueva" class="modal-form">
           <div class="form-group">
-            <label>Título</label>
+            <label>Título *</label>
             <input type="text" v-model="nuevaReceta.titulo" required />
           </div>
           
           <div class="form-group">
-            <label>Preparación</label>
+            <label>Dificultad</label>
+            <select v-model="nuevaReceta.dificultad" class="select-dificultad">
+              <option value="fácil">😇 Fácil</option>
+              <option value="media">😐 Media</option>
+              <option value="difícil">👹 Difícil</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>Preparación *</label>
             <textarea v-model="nuevaReceta.preparacion" rows="8" required></textarea>
           </div>
           
@@ -67,7 +81,7 @@
       </div>
     </div>
 
-    <!-- MODAL DE EDITAR -->
+    <!-- MODAL EDITAR -->
     <div v-if="modalEditarAbierto" class="modal" @click.self="cerrarModalEditar">
       <div class="modal-content">
         <div class="modal-header">
@@ -77,12 +91,21 @@
         
         <form @submit.prevent="guardarEdicion" class="modal-form">
           <div class="form-group">
-            <label>Título</label>
+            <label>Título *</label>
             <input type="text" v-model="recetaEditando.titulo" required />
           </div>
           
           <div class="form-group">
-            <label>Preparación</label>
+            <label>Dificultad</label>
+            <select v-model="recetaEditando.dificultad" class="select-dificultad">
+              <option value="fácil">😇 Fácil</option>
+              <option value="media">😐 Media</option>
+              <option value="difícil">👹 Difícil</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>Preparación *</label>
             <textarea v-model="recetaEditando.preparacion" rows="8" required></textarea>
           </div>
           
@@ -113,7 +136,8 @@ const creando = ref(false)
 const nuevaReceta = ref({
   titulo: '',
   preparacion: '',
-  url_imagen: ''
+  url_imagen: '',
+  dificultad: 'media'
 })
 
 const modalEditarAbierto = ref(false)
@@ -122,7 +146,8 @@ const recetaEditando = ref({
   id: null,
   titulo: '',
   preparacion: '',
-  url_imagen: ''
+  url_imagen: '',
+  dificultad: 'media'
 })
 
 const volver = () => {
@@ -130,7 +155,7 @@ const volver = () => {
 }
 
 const abrirModalCrear = () => {
-  nuevaReceta.value = { titulo: '', preparacion: '', url_imagen: '' }
+  nuevaReceta.value = { titulo: '', preparacion: '', url_imagen: '', dificultad: 'media' }
   modalCrearAbierto.value = true
 }
 
@@ -139,12 +164,22 @@ const cerrarModalCrear = () => {
   creando.value = false
 }
 
+// Obtener token del localStorage
+const getToken = () => {
+  return localStorage.getItem('token')
+}
+
 const guardarNueva = async () => {
   creando.value = true
+  const token = localStorage.getItem('token')  // ← Obtener token
+  
   try {
     const response = await fetch('http://localhost:3001/api/recetas', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`  // ← Agregar token
+      },
       body: JSON.stringify(nuevaReceta.value)
     })
     
@@ -153,7 +188,8 @@ const guardarNueva = async () => {
       refresh()
       alert('✅ Receta creada correctamente')
     } else {
-      alert('❌ Error al crear la receta')
+      const error = await response.json()
+      alert('❌ Error: ' + (error.message || 'Error al crear'))
     }
   } catch (err) {
     alert('❌ Error de conexión')
@@ -174,14 +210,20 @@ const cerrarModalEditar = () => {
 
 const guardarEdicion = async () => {
   guardando.value = true
+  const token = getToken()
+  
   try {
     const response = await fetch(`http://localhost:3001/api/recetas/${recetaEditando.value.id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify({
         titulo: recetaEditando.value.titulo,
         preparacion: recetaEditando.value.preparacion,
-        url_imagen: recetaEditando.value.url_imagen
+        url_imagen: recetaEditando.value.url_imagen,
+        dificultad: recetaEditando.value.dificultad
       })
     })
     
@@ -190,7 +232,8 @@ const guardarEdicion = async () => {
       refresh()
       alert('✅ Receta actualizada correctamente')
     } else {
-      alert('❌ Error al actualizar')
+      const errorData = await response.json()
+      alert('❌ Error: ' + (errorData.message || 'Error al actualizar'))
     }
   } catch (err) {
     alert('❌ Error de conexión')
@@ -201,8 +244,34 @@ const guardarEdicion = async () => {
 
 const eliminarReceta = async (id) => {
   if (confirm('¿Estás seguro de eliminar esta receta?')) {
-    await fetch(`http://localhost:3001/api/recetas/${id}`, { method: 'DELETE' })
+    const token = getToken()
+    
+    await fetch(`http://localhost:3001/api/recetas/${id}`, { 
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
     refresh()
+  }
+}
+
+// Funciones para mostrar dificultad en la tabla
+const getDificultadIcon = (dificultad) => {
+  switch (dificultad) {
+    case 'fácil': return '😇'
+    case 'media': return '😐'
+    case 'difícil': return '👹'
+    default: return '⭐'
+  }
+}
+
+const getDificultadClass = (dificultad) => {
+  switch (dificultad) {
+    case 'fácil': return 'dificultad-facil'
+    case 'media': return 'dificultad-media'
+    case 'difícil': return 'dificultad-dificil'
+    default: return ''
   }
 }
 </script>

@@ -1,67 +1,85 @@
 const { Receta, Ingrediente, RecetaIngrediente } = require('../models');
 
-const getAll = async (req, res) => {
+const getAll = async (req, res, next) => {
   try {
     const recetas = await Receta.findAll();
     res.json(recetas);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const getById = async (req, res) => {
+const getById = async (req, res, next) => {
   try {
     const receta = await Receta.findByPk(req.params.id, {
       include: Ingrediente
     });
     if (!receta) {
-      return res.status(404).json({ error: 'Receta no encontrada' });
+      const error = new Error('Receta no encontrada');
+      error.status = 404;
+      return next(error);
     }
     res.json(receta);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
 // CREAR 
-const create = async (req, res) => {
+const create = async (req, res, next) => {
   try {
-    const { titulo, preparacion, url_imagen } = req.body;
+    const { titulo, preparacion, url_imagen, dificultad } = req.body;
     if (!titulo) {
-      return res.status(400).json({ error: 'El título es obligatorio' });
+      const error = new Error('El título es obligatorio');
+      error.status = 400;
+      return next(error);
     }
-    const receta = await Receta.create({ titulo, preparacion, url_imagen });
+    const receta = await Receta.create({ 
+      titulo, 
+      preparacion, 
+      url_imagen, 
+      dificultad 
+    });
     res.status(201).json(receta);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
 // ACTUALIZAR
-const update = async (req, res) => {
+const update = async (req, res, next) => {
   try {
     const receta = await Receta.findByPk(req.params.id);
     if (!receta) {
-      return res.status(404).json({ error: 'Receta no encontrada' });
+      const error = new Error('Receta no encontrada');
+      error.status = 404;
+      return next(error);
     }
-    const { titulo, preparacion, url_imagen } = req.body;
-    await receta.update({ titulo, preparacion, url_imagen });
+    const { titulo, preparacion, url_imagen, dificultad } = req.body;
+    await receta.update({ 
+      titulo, 
+      preparacion, 
+      url_imagen, 
+      dificultad 
+    });
     res.json(receta);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const remove = async (req, res) => {
+const remove = async (req, res, next) => {
   try {
     const receta = await Receta.findByPk(req.params.id);
     if (!receta) {
-      return res.status(404).json({ error: 'Receta no encontrada' });
+      const error = new Error('Receta no encontrada');
+      error.status = 404;
+      return next(error);
     }
     await receta.destroy();
     res.json({ mensaje: 'Receta eliminada' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 

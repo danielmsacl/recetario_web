@@ -1,3 +1,7 @@
+/* ============================================ */
+/* ADMIN RECETAS - ESTILOS COMPLETOS */
+/* ============================================ */
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -37,6 +41,7 @@
   background: #5a6268;
 }
 
+/* Tabla */
 .tabla-recetas {
   width: 100%;
   border-collapse: collapse;
@@ -121,6 +126,7 @@
   background: #219a52;
 }
 
+/* Estados */
 .loading {
   text-align: center;
   padding: 50px;
@@ -139,6 +145,7 @@
   margin: 20px;
 }
 
+/* Modal */
 .modal {
   position: fixed;
   top: 0;
@@ -204,7 +211,8 @@
 }
 
 .modal-form input,
-.modal-form textarea {
+.modal-form textarea,
+.modal-form select {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
@@ -214,7 +222,8 @@
 }
 
 .modal-form input:focus,
-.modal-form textarea:focus {
+.modal-form textarea:focus,
+.modal-form select:focus {
   outline: none;
   border-color: #e67e22;
 }
@@ -260,6 +269,44 @@
   background: #7f8c8d;
 }
 
+/* Dificultad */
+.select-dificultad {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+}
+
+.dificultad-cell {
+  text-align: center;
+}
+
+.dificultad-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.dificultad-facil {
+  background: #d4edda;
+  color: #155724;
+}
+
+.dificultad-media {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.dificultad-dificil {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .container {
     padding: 10px;
@@ -286,7 +333,8 @@
     gap: 5px;
   }
   
-  .btn-editar, .btn-eliminar {
+  .btn-editar, 
+  .btn-eliminar {
     padding: 4px 8px;
     font-size: 0.75rem;
   }

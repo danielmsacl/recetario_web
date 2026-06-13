@@ -18,6 +18,11 @@ module.exports = (sequelize) => {
     url_imagen: {
       type: DataTypes.STRING(500),
       allowNull: true
+    },
+    dificultad: {
+      type: DataTypes.ENUM('fácil', 'media', 'difícil'),
+      allowNull: false,
+      defaultValue: 'media'
     }
   }, {
     tableName: 'recetas',

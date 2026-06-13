@@ -1,41 +1,20 @@
--- Crear la base de datos
-CREATE DATABASE IF NOT EXISTS recetario;
-USE recetario;
-
--- =============================================
--- TABLA: usuarios
--- =============================================
-CREATE TABLE usuarios (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    rol VARCHAR(20) DEFAULT 'usuario',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
--- =============================================
--- TABLA: recetas
--- =============================================
+create database if not exists recetario;
+use recetario;
+show tables;
+describe recetas;
 CREATE TABLE recetas (
     id INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(200) NOT NULL,
-    preparacion TEXT NOT NULL,
-    url_imagen VARCHAR(500)
+    preparacion TEXT NOT NULL
 );
 
--- =============================================
--- TABLA: ingredientes
--- =============================================
+
 CREATE TABLE ingredientes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100) NOT NULL UNIQUE
 );
+describe ingredientes;
 
--- =============================================
--- TABLA: receta_ingredientes (relación N:M)
--- =============================================
 CREATE TABLE receta_ingredientes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     receta_id INT NOT NULL,
@@ -45,47 +24,25 @@ CREATE TABLE receta_ingredientes (
     FOREIGN KEY (receta_id) REFERENCES recetas(id) ON DELETE CASCADE,
     FOREIGN KEY (ingrediente_id) REFERENCES ingredientes(id) ON DELETE CASCADE
 );
+CREATE TABLE usuarios (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    rol VARCHAR(20) DEFAULT 'usuario',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+CREATE TABLE password_reset_tokens (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(100) NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
--- =============================================
--- DATOS DE PRUEBA
--- =============================================
-
--- Usuario desarrollador (contraseña: 123456)
-INSERT INTO usuarios (nombre, email, password, rol) VALUES 
-('Daniel Prueba', 'daniel@gmail.com', '$2a$10$Tm5bJFKaB7.PkG4lFUMz/O9JEOp5qUZwBCqwBd7S3/34hC9AVoAQK', 'desarrollador');
-
-
-INSERT INTO usuarios (nombre, email, password, rol) VALUES 
-('Usuario Test', 'test@ejemplo.com', '$2a$10$cSgFxFKdAdlYs/n8/17/veJkCMNbyGZuI', 'usuario');
-
-INSERT INTO ingredientes (nombre) VALUES 
-('Huevo'),
-('Papa'),
-('Harina'),
-('Queso'),
-('Tomate'),
-('Leche');
-
-INSERT INTO recetas (titulo, preparacion, url_imagen) VALUES 
-('Tortilla de papas', 'Batir los huevos, cortar las papas en rodajas, freír las papas, mezclar con los huevos, cocinar en sartén.', NULL),
-('Sopa de Macaco', 'Iaaaaaaa', NULL),
-('Completo Italiano', 'Paso a paso: Preparar el tomate, preparar la palta, calentar la vienesa, calentar el pan, armar.', NULL),
-('Tallarines con Queso', 'Hervir agua, cocer tallarines, escurrir, agregar queso rallado, mezclar.', NULL);
-
-INSERT INTO receta_ingredientes (receta_id, ingrediente_id, cantidad, unidad) VALUES 
-(1, 1, 3, 'unidades'),
-(1, 2, 500, 'gramos');
-
-INSERT INTO receta_ingredientes (receta_id, ingrediente_id, cantidad, unidad) VALUES 
-(3, 5, 1, 'unidad');
-
-INSERT INTO receta_ingredientes (receta_id, ingrediente_id, cantidad, unidad) VALUES 
-(4, 4, 100, 'gramos'),
-(4, 3, 200, 'gramos');
-
-INSERT INTO recetas (titulo, preparacion, url_imagen) VALUES 
-('Sopa de Macaco', 'Hervir agua, agregar los ingredientes, cocinar por 15 minutos, servir caliente.', 'http://localhost:3001/uploads/recetas/sopamacaco.jpg'),
-('Completo Italiano', 'Calentar la vienesa, abrir el pan, agregar tomate picado, palta, mayonesa y la vienesa.', 'http://localhost:3001/uploads/recetas/completos.jpg'),
-('Pizza Casera', 'Mezclar harina, agua y levadura, reposar, estirar la masa, agregar salsa y queso, hornear 15 minutos.', 'http://localhost:3001/uploads/recetas/pizza.jpg'),
-('Pastel de Choclo', 'Preparar el pino de carne, cubrir con choclo molido, hornear hasta gratinar.', 'http://localhost:3001/uploads/recetas/pastel_choclo.jpg'),
-('Cazuela de Vacuno', 'Cocinar la carne con verduras, agregar arroz, papas y servir caliente.', 'http://localhost:3001/uploads/recetas/cazuela.jpg');
+describe usuarios;
+select * from usuarios;
+describe recetas;
+SELECT id, nombre, email, rol FROM usuarios WHERE email = 'daniel@gmail.com';
+UPDATE usuarios SET rol = 'desarrollador' WHERE id = 1;

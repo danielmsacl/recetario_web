@@ -6,6 +6,12 @@ const ingredientesRoutes = require('./routes/ingredientesRoutes');
 const authRoutes = require('./routes/authRoutes');
 const cors = require('cors')
 
+//middlewares de error
+
+const notFound = require('./middlewares/notFound');
+//const errorHandler = require('./middlewares/errorHandler');
+
+
 app.use('/uploads', express.static('src/uploads'));
 app.use(express.json());
 app.use(cors())
@@ -17,6 +23,11 @@ app.get('/', (req, res) => {
 
 app.use('/api', recetasRoutes); 
 app.use('/api', ingredientesRoutes);
+
+
+app.use(notFound);
+//app.use(errorHandler);
+
 
 app.listen(PORT, () => {
   console.log(`Servidor en http://localhost:${PORT}`);

@@ -9,13 +9,15 @@ const { Op } = require('sequelize');
 //-------------------------------------------------------------------------------------
 
 // Registro
-const registrar = async (req, res) => {
+const registrar = async (req, res, next) => {
   try {
     const { email, password, nombre } = req.body;
     
     const usuarioExistente = await Usuario.findOne({ where: { email } });
     if (usuarioExistente) {
-      return res.status(400).json({ error: 'El email ya está registrado' });
+      const error = new Error('El email ya está registrado');
+      error.status = 400;
+      return next(error);
     }
     
     const usuario = await Usuario.create({ 
@@ -32,23 +34,27 @@ const registrar = async (req, res) => {
       rol: usuario.rol 
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
 // Login
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     
     const usuario = await Usuario.findOne({ where: { email } });
     if (!usuario) {
-      return res.status(401).json({ error: 'Credenciales inválidas' });
+      const error = new Error('Credenciales inválidas');
+      error.status = 401;
+      return next(error);
     }
     
     const passwordValida = await bcrypt.compare(password, usuario.password);
     if (!passwordValida) {
-      return res.status(401).json({ error: 'Credenciales inválidas' });
+      const error = new Error('Credenciales inválidas');
+      error.status = 401;
+      return next(error);
     }
     
     const token = jwt.sign(
@@ -67,24 +73,24 @@ const login = async (req, res) => {
       } 
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
 // Obtener todos los usuarios
-const getUsuarios = async (req, res) => {
+const getUsuarios = async (req, res, next) => {
   try {
     const usuarios = await Usuario.findAll({
       attributes: ['id', 'nombre', 'email', 'rol', 'created_at', 'updated_at']
     });
     res.json(usuarios);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
 // Obtener un usuario por ID
-const getUsuarioById = async (req, res) => {
+const getUsuarioById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const usuario = await Usuario.findByPk(id, {
@@ -92,24 +98,28 @@ const getUsuarioById = async (req, res) => {
     });
     
     if (!usuario) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
+      const error = new Error('Usuario no encontrado');
+      error.status = 404;
+      return next(error);
     }
     
     res.json(usuario);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
 // Actualizar usuario
-const update = async (req, res) => {
+const update = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { nombre, email, rol } = req.body;
     
     const usuario = await Usuario.findByPk(id);
     if (!usuario) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
+      const error = new Error('Usuario no encontrado');
+      error.status = 404;
+      return next(error);
     }
     
     if (nombre !== undefined) usuario.nombre = nombre;
@@ -124,21 +134,23 @@ const update = async (req, res) => {
     
     res.json(usuarioActualizado);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
 // Eliminar usuario
-const remove = async (req, res) => {
+const remove = async (req, res, next) => {
   try {
     const usuario = await Usuario.findByPk(req.params.id);
     if (!usuario) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
+      const error = new Error('Usuario no encontrado');
+      error.status = 404;
+      return next(error);
     }
     await usuario.destroy();
     res.json({ mensaje: 'Usuario eliminado' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
@@ -146,12 +158,14 @@ const remove = async (req, res) => {
 // Solicitar restablecimiento de contraseña
 //-------------------------------------------------------------------------------
 
-const solicitarReset = async (req, res) => {
+const solicitarReset = async (req, res, next) => {
   try {
     const { email } = req.body;
     
     if (!email) {
-      return res.status(400).json({ error: 'El email es obligatorio' });
+      const error = new Error('El email es obligatorio');
+      error.status = 400;
+      return next(error);
     }
     
     const usuario = await Usuario.findOne({ where: { email } });
@@ -180,11 +194,11 @@ const solicitarReset = async (req, res) => {
     });
     
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const verificarToken = async (req, res) => {
+const verificarToken = async (req, res, next) => {
   try {
     const { token } = req.params;
     
@@ -196,22 +210,26 @@ const verificarToken = async (req, res) => {
     });
     
     if (!resetToken) {
-      return res.status(400).json({ error: 'Token inválido o expirado' });
+      const error = new Error('Token inválido o expirado');
+      error.status = 400;
+      return next(error);
     }
     
     res.json({ valido: true, email: resetToken.email });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const restablecerPassword = async (req, res) => {
+const restablecerPassword = async (req, res, next) => {
   try {
     const { token } = req.params;
     const { password } = req.body;
     
     if (!password || password.length < 6) {
-      return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
+      const error = new Error('La contraseña debe tener al menos 6 caracteres');
+      error.status = 400;
+      return next(error);
     }
     
     const resetToken = await PasswordResetToken.findOne({ 
@@ -222,12 +240,16 @@ const restablecerPassword = async (req, res) => {
     });
     
     if (!resetToken) {
-      return res.status(400).json({ error: 'Token inválido o expirado' });
+      const error = new Error('Token inválido o expirado');
+      error.status = 400;
+      return next(error);
     }
     
     const usuario = await Usuario.findOne({ where: { email: resetToken.email } });
     if (!usuario) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
+      const error = new Error('Usuario no encontrado');
+      error.status = 404;
+      return next(error);
     }
     
     usuario.password = password;
@@ -237,11 +259,12 @@ const restablecerPassword = async (req, res) => {
     
     res.json({ mensaje: 'Contraseña actualizada correctamente' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
 // EXPORTS
+
 module.exports = { 
   registrar, 
   login, 

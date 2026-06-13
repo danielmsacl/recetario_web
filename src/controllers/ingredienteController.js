@@ -1,66 +1,76 @@
 const { Ingrediente } = require('../models');
 
-const getAll = async (req, res) => {
+const getAll = async (req, res, next) => {
   try {
     const ingredientes = await Ingrediente.findAll();
     res.json(ingredientes);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const getById = async (req, res) => {
+const getById = async (req, res, next) => {
   try {
     const ingrediente = await Ingrediente.findByPk(req.params.id);
     if (!ingrediente) {
-      return res.status(404).json({ error: 'Ingrediente no encontrado' });
+      const error = new Error('Ingrediente no encontrado');
+      error.status = 404;
+      return next(error);
     }
     res.json(ingrediente);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const create = async (req, res) => {
+const create = async (req, res, next) => {
   try {
     const { nombre } = req.body;
     if (!nombre) {
-      return res.status(400).json({ error: 'El nombre es obligatorio' });
+      const error = new Error('El nombre es obligatorio');
+      error.status = 400;
+      return next(error);
     }
     const ingrediente = await Ingrediente.create({ nombre });
     res.status(201).json(ingrediente);
   } catch (error) {
     if (error.name === 'SequelizeUniqueConstraintError') {
-      return res.status(409).json({ error: 'El ingrediente ya existe' });
+      error.status = 409;
+      error.message = 'El ingrediente ya existe';
+      return next(error);
     }
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const update = async (req, res) => {
+const update = async (req, res, next) => {
   try {
     const ingrediente = await Ingrediente.findByPk(req.params.id);
     if (!ingrediente) {
-      return res.status(404).json({ error: 'Ingrediente no encontrado' });
+      const error = new Error('Ingrediente no encontrado');
+      error.status = 404;
+      return next(error);
     }
     const { nombre } = req.body;
     await ingrediente.update({ nombre });
     res.json(ingrediente);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const remove = async (req, res) => {
+const remove = async (req, res, next) => {
   try {
     const ingrediente = await Ingrediente.findByPk(req.params.id);
     if (!ingrediente) {
-      return res.status(404).json({ error: 'Ingrediente no encontrado' });
+      const error = new Error('Ingrediente no encontrado');
+      error.status = 404;
+      return next(error);
     }
     await ingrediente.destroy();
     res.json({ mensaje: 'Ingrediente eliminado' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
