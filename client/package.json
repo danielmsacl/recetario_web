@@ -6,23 +6,9 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "preview": "nuxt preview"
   },
   "dependencies": {
-    "@nuxt/content": "^3.14.0",
-    "@nuxt/image": "^2.0.0",
-    "@nuxt/ui": "^4.8.2",
-    "@nuxtjs/google-fonts": "^3.2.0",
-    "@nuxtjs/tailwindcss": "^6.14.0",
-    "cors": "^2.8.6",
-    "nuxt": "^3.13.2",
-    "vue": "^3.5.35",
-    "vue-router": "^4.6.4"
-  },
-  "overrides": {
-    "oxc-parser": {
-      "@oxc-parser/binding-win32-x64-msvc": "0.0.0"
-    }
+    "nuxt": "^3.13.2"
   }
 }
