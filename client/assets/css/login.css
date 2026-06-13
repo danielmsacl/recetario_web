@@ -15,7 +15,7 @@ body {
   margin: -20px 0 50px;
 }
 .login-body {
-  background-image: url('http://localhost:3001/uploads/fondo_login.png');
+  background-image: url('/uploads/fondo_login.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
