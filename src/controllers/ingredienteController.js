@@ -71,7 +71,7 @@ const remove = async (req, res, next) => {
     // Verificar si el ingrediente está siendo usado en alguna receta
     const [result] = await Ingrediente.sequelize.query(`
       SELECT COUNT(*) as en_uso
-      FROM receta_ingrediente
+      FROM receta_ingredientes
       WHERE ingrediente_id = ?
     `, {
       replacements: [req.params.id],
