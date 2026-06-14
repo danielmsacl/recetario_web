@@ -8,10 +8,7 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": "",
-    "database": "recetario",
-    "host": "localhost",
+    "use_env_variable": "DATABASE_URL",
     "dialect": "mysql"
   }
 }
