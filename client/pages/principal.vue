@@ -50,7 +50,6 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { API_URL } from '~/api'
 
 const usuarioActual = ref({ nombre: 'Invitado', email: '', rol: 'usuario' })
 
