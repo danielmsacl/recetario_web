@@ -7,13 +7,12 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     '@nuxt/image'
   ],
-  // Configuración para redirigir peticiones de la API en producción
   routeRules: {
     '/api/**': {
-      proxy: 'https://TU_BACKEND_RAILWAY.up.railway.app/api/**'
+      proxy: 'https://recetario-backend.up.railway.app/api/**'
     },
     '/uploads/**': {
-      proxy: 'https://TU_BACKEND_RAILWAY.up.railway.app/uploads/**'
+      proxy: 'https://recetario-backend.up.railway.app/uploads/**'
     }
   }
 })
