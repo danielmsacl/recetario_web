@@ -3,7 +3,7 @@ import { Server } from 'node:http';
 import { resolve, dirname, join } from 'node:path';
 import nodeCrypto from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, createError, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, getRouterParam, setHeader, getQuery as getQuery$1, readBody, getResponseStatus, lazyEventHandler, useBase, createApp, createRouter as createRouter$1, toNodeListener, getResponseStatusText } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/h3/dist/index.mjs';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, createError, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, getQuery as getQuery$1, readBody, getResponseStatus, lazyEventHandler, useBase, createApp, createRouter as createRouter$1, toNodeListener, getRouterParam, getResponseStatusText } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/h3/dist/index.mjs';
 import { escapeHtml } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/@vue/shared/dist/shared.cjs.js';
 import viteNodeEntry_mjs from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/@nuxt/vite-builder/dist/vite-node-entry.mjs';
 import { viteNodeFetch } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/@nuxt/vite-builder/dist/vite-node.mjs';
@@ -14,10 +14,10 @@ import { renderToString } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub
 import { klona } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/klona/dist/index.mjs';
 import defu, { defuFn } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/defu/dist/defu.mjs';
 import { snakeCase } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/scule/dist/index.mjs';
-import { createHead as createHead$1, propsToString, renderSSRHead } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/@unhead/vue/node_modules/unhead/dist/server.mjs';
+import { createHead as createHead$1, propsToString, renderSSRHead } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/unhead/dist/server.mjs';
 import { stringify, uneval } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/devalue/index.js';
 import { isVNode, isRef, toValue } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/vue/index.mjs';
-import { createHooks } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/nitropack/node_modules/hookable/dist/index.mjs';
+import { createHooks } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/hookable/dist/index.mjs';
 import { createFetch, Headers as Headers$1 } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/ofetch/dist/node.mjs';
 import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/node-mock-http/dist/index.mjs';
 import { createStorage, prefixStorage } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/unstorage/dist/index.mjs';
@@ -37,8 +37,7 @@ import _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw from 'file://C:/Users/danie/O
 import { promises } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname as dirname$1, resolve as resolve$1, isAbsolute } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/pathe/dist/index.mjs';
-import { walkResolver } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/@unhead/vue/node_modules/unhead/dist/utils.mjs';
-import localAdapter from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/db0/dist/connectors/better-sqlite3.mjs';
+import { walkResolver } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/unhead/dist/utils.mjs';
 import { ipxFSStorage, ipxHttpStorage, createIPX, createIPXH3Handler } from 'file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/node_modules/ipx/dist/index.mjs';
 
 const serverAssets = [{"baseName":"server","dir":"C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/server/assets"}];
@@ -641,12 +640,17 @@ const _inlineRuntimeConfig = {
       "/__nuxt_error": {
         "cache": false
       },
-      "/__nuxt_content/**": {
-        "robots": false,
-        "cache": false
+      "/api/**": {
+        "proxy": {
+          "to": "https://recetarioweb-production.up.railway.app/api/**",
+          "_proxyStripBase": "/api"
+        }
       },
-      "/__nuxt_content/content/sql_dump.txt": {
-        "prerender": true
+      "/uploads/**": {
+        "proxy": {
+          "to": "https://recetarioweb-production.up.railway.app/uploads/**",
+          "_proxyStripBase": "/uploads"
+        }
       },
       "/_nuxt/builds/meta/**": {
         "headers": {
@@ -657,71 +661,10 @@ const _inlineRuntimeConfig = {
         "headers": {
           "cache-control": "public, max-age=1, immutable"
         }
-      },
-      "/__nuxt_content/content/sql_dump.txt/_payload.json": {
-        "ssr": true,
-        "prerender": true
       }
     }
   },
-  "public": {
-    "mdc": {
-      "components": {
-        "prose": true,
-        "map": {},
-        "customElements": []
-      },
-      "headings": {
-        "anchorLinks": {
-          "h1": false,
-          "h2": true,
-          "h3": true,
-          "h4": true,
-          "h5": false,
-          "h6": false
-        }
-      },
-      "highlight": {
-        "noApiRoute": true,
-        "highlighter": "shiki",
-        "theme": {
-          "default": "github-light",
-          "dark": "github-dark"
-        },
-        "shikiEngine": "oniguruma",
-        "langs": [
-          "js",
-          "jsx",
-          "json",
-          "ts",
-          "tsx",
-          "vue",
-          "css",
-          "html",
-          "bash",
-          "md",
-          "mdc",
-          "yaml"
-        ]
-      }
-    },
-    "content": {
-      "wsUrl": ""
-    }
-  },
-  "content": {
-    "databaseVersion": "v3.5.0",
-    "version": "3.14.0",
-    "database": {
-      "type": "sqlite",
-      "filename": "./contents.sqlite"
-    },
-    "localDatabase": {
-      "type": "sqlite",
-      "filename": "C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/.data/content/contents.sqlite"
-    },
-    "integrityCheck": true
-  },
+  "public": {},
   "ipx": {
     "baseURL": "/_ipx",
     "alias": {},
@@ -2330,20 +2273,6 @@ const _1cE8xe = eventHandler((event) => {
   return readAsset(id);
 });
 
-const _4Uh1qW = eventHandler(async (event) => {
-  const collection = getRouterParam(event, "collection") || event.path?.split("/")?.[2] || "";
-  setHeader(event, "Content-Type", "text/plain");
-  const data = await useStorage().getItem(`build:content:database.compressed.mjs`) || "";
-  if (data) {
-    const lineStart = `export const ${collection} = "`;
-    const content = String(data).split("\n").find((line) => line.startsWith(lineStart));
-    if (content) {
-      return content.substring(lineStart.length, content.length - 1);
-    }
-  }
-  return await import('file://C:/Users/danie/OneDrive/Documentos/GitHub/WEB_EVA2/recetario_web/client/.nuxt/content/database.compressed.mjs').then((m) => m[collection]);
-});
-
 const VueResolver = (_, value) => {
   return isRef(value) ? toValue(value) : value;
 };
@@ -2785,348 +2714,6 @@ async function getIslandContext(event) {
 	};
 }
 
-async function decompressSQLDump(base64Str, compressionType = "gzip") {
-  let binaryData;
-  if (typeof Buffer !== "undefined") {
-    const buffer = Buffer.from(base64Str, "base64");
-    binaryData = Uint8Array.from(buffer);
-  } else if (typeof atob !== "undefined") {
-    binaryData = Uint8Array.from(atob(base64Str), (c) => c.charCodeAt(0));
-  } else {
-    throw new TypeError("No base64 decoding method available");
-  }
-  const response = new Response(new Blob([binaryData]));
-  const decompressedStream = response.body?.pipeThrough(new DecompressionStream(compressionType));
-  const text = await new Response(decompressedStream).text();
-  return JSON.parse(text);
-}
-
-const checksums = {
-  "content": "v3.5.0--bgIYhpjRuV8zbHJE_CfelwKpJ_Td6YuGJwixiek8lmI"
-};
-const checksumsStructure = {
-  "content": "bgIYhpjRuV8zbHJE_CfelwKpJ_Td6YuGJwixiek8lmI"
-};
-const tables = {
-  "content": "_content_content",
-  "info": "_content_info"
-};
-const contentManifest = {
-  "content": {
-    "type": "page",
-    "fields": {
-      "id": "string",
-      "title": "string",
-      "body": "json",
-      "description": "string",
-      "extension": "string",
-      "meta": "json",
-      "navigation": "json",
-      "path": "string",
-      "seo": "json",
-      "stem": "string"
-    }
-  },
-  "info": {
-    "type": "data",
-    "fields": {}
-  }
-};
-
-async function fetchContent(event, collection, path, options) {
-  const headers = event ? getRequestHeaders(event) : {};
-  headers["accept-encoding"] = void 0;
-  const url = `/__nuxt_content/${collection}/${path}`;
-  const fetchOptions = {
-    ...options,
-    headers: {
-      ...headers,
-      ...options.headers
-    },
-    query: { v: checksums[String(collection)], t: Date.now()  }
-  };
-  return event ? await event.$fetch(url, fetchOptions) : await $fetch(url, fetchOptions);
-}
-async function fetchDatabase(event, collection) {
-  return fetchContent(event, collection, "sql_dump.txt", {
-    responseType: "text",
-    headers: {
-      "content-type": "text/plain"
-    }
-  });
-}
-
-function refineContentFields(sql, doc) {
-  const fields = findCollectionFields(sql);
-  const item = { ...doc };
-  for (const key in item) {
-    if (fields[key] === "json" && item[key] && item[key] !== "undefined") {
-      item[key] = JSON.parse(item[key]);
-    }
-    if (fields[key] === "boolean" && item[key] !== "undefined") {
-      item[key] = Boolean(item[key]);
-    }
-  }
-  for (const key in item) {
-    if (item[key] === "NULL") {
-      item[key] = void 0;
-    }
-  }
-  return item;
-}
-function findCollectionFields(sql) {
-  const table = sql.match(/FROM\s+(\w+)/);
-  if (!table) {
-    return {};
-  }
-  const info = contentManifest[getCollectionName(table[1])];
-  return info?.fields || {};
-}
-function getCollectionName(table) {
-  return table.replace(/^_content_/, "");
-}
-
-let db;
-function loadDatabaseAdapter(config) {
-  const { database, localDatabase } = config;
-  if (!db) {
-    {
-      db = localAdapter(refineDatabaseConfig(localDatabase));
-    }
-  }
-  return {
-    all: async (sql, params = []) => {
-      return db.prepare(sql).all(...params).then((result) => (result || []).map((item) => refineContentFields(sql, item)));
-    },
-    first: async (sql, params = []) => {
-      return db.prepare(sql).get(...params).then((item) => item ? refineContentFields(sql, item) : item);
-    },
-    exec: async (sql, params = []) => {
-      return db.prepare(sql).run(...params);
-    }
-  };
-}
-const checkDatabaseIntegrity = /* @__PURE__ */ new Map();
-const integrityCheckPromise = /* @__PURE__ */ new Map();
-async function checkAndImportDatabaseIntegrity(event, collection, config) {
-  if (checkDatabaseIntegrity.get(collection) !== false) {
-    checkDatabaseIntegrity.set(collection, false);
-    if (!integrityCheckPromise.has(collection)) {
-      const _integrityCheck = _checkAndImportDatabaseIntegrity(event, collection, checksums[collection], checksumsStructure[collection], config).then((isValid) => {
-        checkDatabaseIntegrity.set(collection, !isValid);
-      }).catch((error) => {
-        console.error("Database integrity check failed", error);
-        checkDatabaseIntegrity.set(collection, true);
-        integrityCheckPromise.delete(collection);
-      });
-      integrityCheckPromise.set(collection, _integrityCheck);
-    }
-  }
-  if (integrityCheckPromise.has(collection)) {
-    await integrityCheckPromise.get(collection);
-  }
-}
-async function _checkAndImportDatabaseIntegrity(event, collection, integrityVersion, structureIntegrityVersion, config) {
-  const db2 = loadDatabaseAdapter(config);
-  const before = await db2.first(`SELECT * FROM ${tables.info} WHERE id = ?`, [`checksum_${collection}`]).catch(() => null);
-  if (before?.version && !String(before.version)?.startsWith(`${config.databaseVersion}--`)) {
-    await db2.exec(`DROP TABLE IF EXISTS ${tables.info}`);
-    before.version = "";
-  }
-  const unchangedStructure = before?.structureVersion === structureIntegrityVersion;
-  if (before?.version) {
-    if (before.version === integrityVersion) {
-      if (before.ready) {
-        return true;
-      }
-      await waitUntilDatabaseIsReady(db2, collection);
-      return true;
-    }
-    await db2.exec(`DELETE FROM ${tables.info} WHERE id = ?`, [`checksum_${collection}`]);
-    if (!unchangedStructure) {
-      await db2.exec(`DROP TABLE IF EXISTS ${tables[collection]}`);
-    }
-  }
-  const dump = await loadDatabaseDump(event, collection).then(decompressSQLDump);
-  const dumpLinesHash = dump.map((row) => row.split(" -- ").pop());
-  let hashesInDb = /* @__PURE__ */ new Set();
-  if (unchangedStructure) {
-    const hashListFromTheDump = new Set(dumpLinesHash);
-    const hashesInDbRecords = await db2.all(`SELECT __hash__ FROM ${tables[collection]}`).catch(() => []);
-    hashesInDb = new Set(hashesInDbRecords.map((r) => r.__hash__));
-    const hashesToDelete = hashesInDb.difference(hashListFromTheDump);
-    if (hashesToDelete.size) {
-      await db2.exec(`DELETE FROM ${tables[collection]} WHERE __hash__ IN (${Array(hashesToDelete.size).fill("?").join(",")})`, Array.from(hashesToDelete));
-    }
-  }
-  await dump.reduce(async (prev, sql, index) => {
-    await prev;
-    const hash = dumpLinesHash[index];
-    const statement = sql.substring(0, sql.length - hash.length - 4);
-    if (unchangedStructure) {
-      if (hash === "structure") {
-        return Promise.resolve();
-      }
-      if (hashesInDb.has(hash)) {
-        return Promise.resolve();
-      }
-    }
-    await db2.exec(statement).catch((err) => {
-      const message = err.message || "Unknown error";
-      console.error(`Failed to execute SQL ${sql}: ${message}`);
-    });
-  }, Promise.resolve());
-  const after = await db2.first(`SELECT version FROM ${tables.info} WHERE id = ?`, [`checksum_${collection}`]).catch(() => ({ version: "" }));
-  return after?.version === integrityVersion;
-}
-const REQUEST_TIMEOUT = 90;
-async function waitUntilDatabaseIsReady(db2, collection) {
-  let iterationCount = 0;
-  let interval;
-  await new Promise((resolve, reject) => {
-    interval = setInterval(async () => {
-      const row = await db2.first(`SELECT ready FROM ${tables.info} WHERE id = ?`, [`checksum_${collection}`]).catch(() => ({ ready: true }));
-      if (row?.ready) {
-        clearInterval(interval);
-        resolve(0);
-      }
-      if (iterationCount++ > REQUEST_TIMEOUT) {
-        clearInterval(interval);
-        reject(new Error("Waiting for another database initialization timed out"));
-      }
-    }, 1e3);
-  }).catch((e) => {
-    throw e;
-  }).finally(() => {
-    if (interval) {
-      clearInterval(interval);
-    }
-  });
-}
-async function loadDatabaseDump(event, collection) {
-  return await fetchDatabase(event, collection).catch((e) => {
-    console.error("Failed to fetch compressed dump", e);
-    return "";
-  });
-}
-function refineDatabaseConfig(config) {
-  if (config.type === "d1") {
-    return { ...config, bindingName: config.bindingName || config.binding };
-  }
-  if (config.type === "sqlite") {
-    const _config = { ...config };
-    if (config.filename === ":memory:") {
-      return { name: ":memory:" };
-    }
-    if ("filename" in config) {
-      const filename = isAbsolute(config?.filename || "") || config?.filename === ":memory:" ? config?.filename : new URL(config.filename, globalThis._importMeta_.url).pathname;
-      _config.path = process.platform === "win32" && filename.startsWith("/") ? filename.slice(1) : filename;
-    }
-    return _config;
-  }
-  if (config.type === "pglite") {
-    return {
-      dataDir: config.dataDir,
-      // Pass through any other PGlite-specific options
-      ...config
-    };
-  }
-  return config;
-}
-
-const SQL_COMMANDS = /SELECT|INSERT|UPDATE|DELETE|DROP|ALTER|\$/i;
-const SQL_COUNT_REGEX = /^COUNT\((DISTINCT )?([a-z_]\w+|\*)\) as count$/i;
-const SQL_SELECT_REGEX = /^SELECT (.*) FROM (\w+)( WHERE .*)? ORDER BY (["\w,\s]+) (ASC|DESC)( LIMIT \d+)?( OFFSET \d+)?$/;
-function assertSafeQuery(sql, collection) {
-  if (!sql) {
-    throw new Error("Invalid query: Query cannot be empty");
-  }
-  const cleanedupQuery = cleanupQuery(sql);
-  if (cleanedupQuery !== sql) {
-    throw new Error("Invalid query: SQL comments are not allowed");
-  }
-  const match = sql.match(SQL_SELECT_REGEX);
-  if (!match) {
-    throw new Error("Invalid query: Query must be a valid SELECT statement with proper syntax");
-  }
-  const [_, select, from, where, orderBy, order, limit, offset] = match;
-  const columns = select?.trim().split(", ") || [];
-  if (columns.length === 1) {
-    if (columns[0] !== "*" && !columns[0]?.match(SQL_COUNT_REGEX) && !columns[0]?.match(/^"[a-z_]\w+"$/i)) {
-      throw new Error(`Invalid query: Column '${columns[0]}' has invalid format. Expected *, COUNT(), or a quoted column name`);
-    }
-  } else if (!columns.every((column) => column.match(/^"[a-z_]\w+"$/i))) {
-    throw new Error("Invalid query: Multiple columns must be properly quoted and alphanumeric");
-  }
-  if (from !== `_content_${collection}`) {
-    const collection2 = String(from || "").replace(/^_content_/, "");
-    throw new Error(`Invalid query: Collection '${collection2}' does not exist`);
-  }
-  if (where) {
-    if (!where.startsWith(" WHERE (") || !where.endsWith(")")) {
-      throw new Error("Invalid query: WHERE clause must be properly enclosed in parentheses");
-    }
-    const noString = cleanupQuery(where, { removeString: true });
-    if (noString.match(SQL_COMMANDS)) {
-      throw new Error("Invalid query: WHERE clause contains unsafe SQL commands");
-    }
-  }
-  const _order = (orderBy + " " + order).split(", ");
-  if (!_order.every((column) => column.match(/^("[a-zA-Z_]+"|[a-zA-Z_]+) (ASC|DESC)$/))) {
-    throw new Error("Invalid query: ORDER BY clause must contain valid column names followed by ASC or DESC");
-  }
-  if (limit !== void 0 && !limit.match(/^ LIMIT \d+$/)) {
-    throw new Error("Invalid query: LIMIT clause must be a positive number");
-  }
-  if (offset !== void 0 && !offset.match(/^ OFFSET \d+$/)) {
-    throw new Error("Invalid query: OFFSET clause must be a positive number");
-  }
-  return true;
-}
-function cleanupQuery(query, options = { removeString: false }) {
-  let inString = false;
-  let stringFence = "";
-  let result = "";
-  for (let i = 0; i < query.length; i++) {
-    const char = query[i];
-    const prevChar = query[i - 1];
-    const nextChar = query[i + 1];
-    if (char === "'" || char === '"') {
-      if (!options?.removeString) {
-        result += char;
-        continue;
-      }
-      if (inString) {
-        if (char !== stringFence || nextChar === stringFence || prevChar === stringFence) {
-          continue;
-        }
-        inString = false;
-        stringFence = "";
-        continue;
-      } else {
-        inString = true;
-        stringFence = char;
-        continue;
-      }
-    }
-    if (!inString) {
-      if (char === "-" && nextChar === "-") {
-        return result;
-      }
-      if (char === "/" && nextChar === "*") {
-        i += 2;
-        while (i < query.length && !(query[i] === "*" && query[i + 1] === "/")) {
-          i += 1;
-        }
-        i += 2;
-        continue;
-      }
-      result += char;
-    }
-  }
-  return result;
-}
-
 function defineRenderHandler(render) {
   const runtimeConfig = useRuntimeConfig();
   return eventHandler(async (event) => {
@@ -3203,17 +2790,6 @@ async function runTask(name, {
   }
 }
 
-const _jzpcQk = eventHandler(async (event) => {
-  const { sql } = await readBody(event);
-  const collection = getRouterParam(event, "collection") || event.path?.split("/")?.[2] || "";
-  assertSafeQuery(sql, collection);
-  const conf = useRuntimeConfig().content;
-  if (conf.integrityCheck) {
-    await checkAndImportDatabaseIntegrity(event, collection, conf);
-  }
-  return loadDatabaseAdapter(conf).all(sql);
-});
-
 const _tcO_qD = lazyEventHandler(() => {
   const opts = useRuntimeConfig().ipx || {};
   const fsDir = opts?.fs?.dir ? (Array.isArray(opts.fs.dir) ? opts.fs.dir : [opts.fs.dir]).map((dir) => isAbsolute(dir) ? dir : fileURLToPath(new URL(dir, globalThis._importMeta_.url))) : void 0;
@@ -3237,11 +2813,7 @@ const _lazy_BJ1hzg = () => Promise.resolve().then(function () { return renderer;
 const handlers = [
   { route: '', handler: _1cE8xe, lazy: false, middleware: true, method: undefined },
   { route: '/__nuxt_error', handler: _lazy_BJ1hzg, lazy: true, middleware: false, method: undefined },
-  { route: '/__nuxt_content/content/sql_dump.txt', handler: _4Uh1qW, lazy: false, middleware: false, method: undefined },
-  { route: '/__nuxt_content/info/sql_dump.txt', handler: _4Uh1qW, lazy: false, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: handler$1, lazy: false, middleware: false, method: undefined },
-  { route: '/__nuxt_content/content/query', handler: _jzpcQk, lazy: false, middleware: false, method: undefined },
-  { route: '/__nuxt_content/info/query', handler: _jzpcQk, lazy: false, middleware: false, method: undefined },
   { route: '/_ipx/**', handler: _tcO_qD, lazy: false, middleware: false, method: undefined },
   { route: '/**', handler: _lazy_BJ1hzg, lazy: true, middleware: false, method: undefined }
 ];

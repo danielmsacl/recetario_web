@@ -19,9 +19,6 @@
       "@nuxt/schema": [
         "../node_modules/@nuxt/schema"
       ],
-      "@nuxtjs/mdc": [
-        "../node_modules/@nuxtjs/mdc"
-      ],
       "defu": [
         "../node_modules/defu"
       ],
@@ -88,10 +85,8 @@
     "../node_modules/nuxt/node_modules",
     "../node_modules/@nuxtjs/google-fonts/node_modules",
     "../node_modules/@nuxt/image/node_modules",
-    "../node_modules/@nuxt/content/node_modules",
     "../node_modules/@nuxt/devtools/node_modules",
     "../node_modules/@nuxt/telemetry/node_modules",
-    "../node_modules/@nuxtjs/mdc/node_modules",
     "../dist",
     "../.data",
     "../modules/*/runtime/**/*",

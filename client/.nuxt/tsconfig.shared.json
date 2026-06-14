@@ -19,9 +19,6 @@
       "@nuxt/schema": [
         "../node_modules/@nuxt/schema"
       ],
-      "@nuxtjs/mdc": [
-        "../node_modules/@nuxtjs/mdc"
-      ],
       "defu": [
         "../node_modules/defu"
       ],
@@ -48,12 +45,6 @@
       ],
       "nitropack/runtime": [
         "../node_modules/nitropack/runtime"
-      ],
-      "#content/components": [
-        "./content/components"
-      ],
-      "#content/manifest": [
-        "./content/manifest"
       ],
       "~": [
         ".."
@@ -108,15 +99,6 @@
       ],
       "#imports": [
         "./imports"
-      ],
-      "#mdc-configs": [
-        "./mdc-configs.mjs"
-      ],
-      "#mdc-highlighter": [
-        "./mdc-highlighter.mjs"
-      ],
-      "#mdc-imports": [
-        "./mdc-imports.mjs"
       ],
       "#app-manifest": [
         "./manifest/meta/dev.json"
