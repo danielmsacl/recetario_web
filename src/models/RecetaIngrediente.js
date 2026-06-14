@@ -16,16 +16,23 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     cantidad: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true
     },
     unidad: {
-      type: DataTypes.STRING(20)
+      type: DataTypes.STRING(20),
+      allowNull: true,
+      defaultValue: 'unidades'
     }
   }, {
     tableName: 'receta_ingredientes',
     timestamps: false
   });
+
+  RecetaIngrediente.associate = (db) => {
+    RecetaIngrediente.belongsTo(db.Receta, { foreignKey: 'receta_id' });
+    RecetaIngrediente.belongsTo(db.Ingrediente, { foreignKey: 'ingrediente_id' });
+  };
 
   return RecetaIngrediente;
 };

@@ -51,6 +51,7 @@
           <div class="dev-actions">
             <button @click="irAdminRecetas" class="btn-dev">📋 Gestionar Recetas</button>
             <button @click="irAdminUsuarios" class="btn-dev">👥 Gestionar Usuarios</button>
+            <button @click="irAdminIngredientes" class="btn-dev">🥬 Gestionar Ingredientes</button>
           </div>
           
           <div class="dev-section">
@@ -488,6 +489,11 @@ const irAdminRecetas = () => {
 
 const irAdminUsuarios = () => {
   navigateTo('/admin/usuarios')
+}
+
+// Nueva función para ir a administrar ingredientes
+const irAdminIngredientes = () => {
+  navigateTo('/admin/ingredientes')
 }
 
 onMounted(() => {
