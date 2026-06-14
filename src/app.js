@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cors())
 app.use('/api/auth', authRoutes);
 app.use(cors({
-  origin: 'https://recetario-web-six.vercel.app/'  // Tu URL de Vercel
+  origin: 'https://recetario-web-six.vercel.app/'  
 }));
 
 app.get('/', (req, res) => {
@@ -28,6 +28,6 @@ app.use('/api', ingredientesRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {  
   console.log(`Servidor en http://localhost:${PORT}`);
 });

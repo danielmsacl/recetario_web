@@ -15,6 +15,7 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "dev": "nuxt dev ",
     "build": "nuxt build",
     "generate": "nuxt generate",
