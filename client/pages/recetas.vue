@@ -250,14 +250,14 @@ onMounted(async () => {
 .receta-ingredientes {
   margin: 10px 0;
   padding: 8px;
-  background: #f8f9fa;
-  border-radius: 10px;
+  background: #9cbee4;
+  border-radius: 16px;
 }
 
 .ingredientes-titulo {
-  font-size: 0.7rem;
-  font-weight: bold;
-  color: #2c3e50;
+  font-size: 1.0rem;
+  font-weight: bolder;
+  color: #000000;
   margin-bottom: 5px;
 }
 
@@ -271,34 +271,35 @@ onMounted(async () => {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: white;
+  background: rgb(227, 253, 193);
   padding: 2px 8px;
   border-radius: 15px;
-  font-size: 0.65rem;
+  font-size: 1.0rem;
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .ingrediente-nombre {
-  color: #2c3e50;
+  color: #0a0e11;
 }
 
 .ingrediente-cantidad {
   color: #e67e22;
-  font-weight: 500;
+  font-weight: 560;
 }
 
 /* Estilos para ingredientes en el modal */
 .detalle-ingredientes {
   margin: 15px 0;
   padding: 15px;
-  background: #f8f9fa;
+  background: #a3b1c0;
   border-radius: 15px;
+  font-weight: bold;
 }
 
 .detalle-ingredientes h3 {
-  color: #2c3e50;
+  color: #000000;
   margin-bottom: 10px;
-  font-size: 1rem;
+  font-size: 1,5rem;
 }
 
 .ingredientes-lista-detalle {
@@ -308,8 +309,8 @@ onMounted(async () => {
 
 .ingredientes-lista-detalle li {
   padding: 5px 0;
-  border-bottom: 1px solid #ddd;
-  color: #555;
+  border-bottom: 1px solid #1f5e17;
+  color: #000000;
 }
 
 .ingredientes-lista-detalle li:last-child {
@@ -331,7 +332,7 @@ onMounted(async () => {
 }
 
 .modal-contenido {
-  background: white;
+  background: rgb(238, 247, 240);
   border-radius: 20px;
   width: 90%;
   max-width: 700px;
@@ -348,26 +349,26 @@ onMounted(async () => {
   border-bottom: 2px solid #e67e22;
   position: sticky;
   top: 0;
-  background: white;
+  background: rgb(163, 218, 218);
   z-index: 10;
 }
 
 .modal-header h2 {
   margin: 0;
-  color: #2c3e50;
+  color: #000000;
 }
 
 .modal-cerrar {
   background: none;
   border: none;
-  font-size: 28px;
+  font-size: 30px;
   cursor: pointer;
-  color: #999;
+  color: #423030;
   transition: color 0.2s;
 }
 
 .modal-cerrar:hover {
-  color: #e74c3c;
+  color: #990f00;
 }
 
 .modal-body {
@@ -382,32 +383,35 @@ onMounted(async () => {
 .detalle-imagen img {
   max-width: 100%;
   max-height: 300px;
-  border-radius: 15px;
+  border-radius: 5px;
   object-fit: cover;
+  border: 4px solid rgba(31, 48, 33, 0.397);
 }
 
 .detalle-dificultad {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #f0f0f0;
+  color: white;
+  background: #4e4a4a;
   padding: 8px 16px;
   border-radius: 30px;
   margin-bottom: 20px;
 }
 
 .detalle-icon {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 
 .detalle-preparacion h3 {
-  color: #2c3e50;
+  color: #ffffff;
   margin-bottom: 10px;
 }
 
 .detalle-preparacion p {
-  color: #555;
+  color: #000000;
   line-height: 1.6;
+  font-weight: bolder;
   white-space: pre-wrap;
 }
 
