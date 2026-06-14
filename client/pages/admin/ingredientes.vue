@@ -23,7 +23,7 @@
             <td class="nombre-cell">{{ ingrediente.nombre }}</td>
             <td class="acciones">
               <button @click="abrirModalEditar(ingrediente)" class="btn-editar">✏️ Editar</button>
-              <button @click="eliminarIngrediente(ingrediente.id)" class="btn-eliminar">🗑️ Eliminar</button>
+              <button @click="eliminarIngrediente(ingrediente.id, ingrediente.nombre)" class="btn-eliminar">🗑️ Eliminar</button>
             </td>
           </tr>
         </tbody>
@@ -189,17 +189,39 @@ const guardarEdicion = async () => {
   }
 }
 
-const eliminarIngrediente = async (id) => {
-  if (confirm('¿Estás seguro de eliminar este ingrediente?')) {
+const eliminarIngrediente = async (id, nombre) => {
+  if (confirm(`¿Estás seguro de eliminar "${nombre}"?`)) {
     const token = getToken()
     
-    await fetch(`${API_URL}/api/ingredientes/${id}`, { 
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`
+    try {
+      const response = await fetch(`${API_URL}/api/ingredientes/${id}`, { 
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      
+      const data = await response.json()
+      
+      if (response.ok) {
+        alert(`✅ ${data.mensaje || 'Ingrediente eliminado correctamente'}`)
+        refresh()
+      } 
+      else if (response.status === 409) {
+        // Error: ingrediente en uso
+        alert(`🚫 ${data.mensaje || 'No se puede eliminar el ingrediente porque está siendo usado en una o más recetas'}`)
       }
-    })
-    refresh()
+      else if (response.status === 404) {
+        alert('❌ Ingrediente no encontrado')
+      }
+      else {
+        alert('❌ Error al eliminar el ingrediente')
+      }
+      
+    } catch (err) {
+      console.error('Error:', err)
+      alert('❌ Error de conexión con el servidor')
+    }
   }
 }
 </script>
