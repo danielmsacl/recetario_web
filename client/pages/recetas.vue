@@ -57,10 +57,25 @@
 
             <div class="receta-contenido">
               <h3 class="receta-titulo">{{ receta.titulo }}</h3>
+              
               <div class="receta-dificultad">
                 <span class="dificultad-icon">{{ getDificultadIcon(receta.dificultad) }}</span>
                 <span class="dificultad-texto">{{ receta.dificultad || 'media' }}</span>
               </div>
+
+              <!-- INGREDIENTES -->
+              <div v-if="ingredientesMap[receta.id] && ingredientesMap[receta.id].length" class="receta-ingredientes">
+                <div class="ingredientes-titulo">🥬 Ingredientes:</div>
+                <div class="ingredientes-lista">
+                  <div v-for="item in ingredientesMap[receta.id]" :key="item.id" class="ingrediente-item">
+                    <span class="ingrediente-nombre">{{ item.Ingrediente?.nombre }}</span>
+                    <span class="ingrediente-cantidad">
+                      {{ item.cantidad }} {{ item.unidad || 'u' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
               <p class="receta-preparacion">{{ truncarTexto(receta.preparacion, 80) }}</p>
               <button @click="abrirModalDetalle(receta)" class="btn-ver">
                 Ver receta completa →
@@ -101,6 +116,16 @@
             <span>Dificultad: {{ recetaDetalle.dificultad || 'media' }}</span>
           </div>
           
+          <!-- INGREDIENTES EN EL MODAL -->
+          <div v-if="ingredientesMap[recetaDetalle.id] && ingredientesMap[recetaDetalle.id].length" class="detalle-ingredientes">
+            <h3>🥬 Ingredientes:</h3>
+            <ul class="ingredientes-lista-detalle">
+              <li v-for="item in ingredientesMap[recetaDetalle.id]" :key="item.id">
+                {{ item.cantidad }} {{ item.unidad || 'u' }} de {{ item.Ingrediente?.nombre }}
+              </li>
+            </ul>
+          </div>
+          
           <div class="detalle-preparacion">
             <h3>📝 Preparación:</h3>
             <p>{{ recetaDetalle.preparacion }}</p>
@@ -116,14 +141,37 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { API_URL } from '~/api'
+
 const { data: recetas, pending, error } = await useFetch(`${API_URL}/api/recetas`)
 
 const busqueda = ref('')
 const filtroDificultad = ref('todas')
 const modalDetalleAbierto = ref(false)
 const recetaDetalle = ref({})
+const ingredientesMap = ref({})
+
+// Cargar ingredientes de una receta
+const cargarIngredientes = async (recetaId) => {
+  try {
+    const res = await fetch(`${API_URL}/api/recetas/${recetaId}/ingredientes`)
+    const data = await res.json()
+    ingredientesMap.value[recetaId] = data
+  } catch (error) {
+    console.error('Error cargando ingredientes:', error)
+    ingredientesMap.value[recetaId] = []
+  }
+}
+
+// Cargar ingredientes de todas las recetas
+const cargarTodosIngredientes = async () => {
+  if (!recetas.value) return
+  
+  for (const receta of recetas.value) {
+    await cargarIngredientes(receta.id)
+  }
+}
 
 // Recetas filtradas
 const recetasFiltradas = computed(() => {
@@ -178,6 +226,11 @@ const cerrarModalDetalle = () => {
 const volver = () => {
   navigateTo('/principal')
 }
+
+// Cargar ingredientes cuando las recetas estén listas
+onMounted(async () => {
+  await cargarTodosIngredientes()
+})
 </script>
 
 <style scoped>
@@ -191,6 +244,76 @@ const volver = () => {
 
 .recetas-main {
   flex: 1;
+}
+
+/* Estilos para ingredientes en la tarjeta */
+.receta-ingredientes {
+  margin: 10px 0;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.ingredientes-titulo {
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+.ingredientes-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.ingrediente-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: white;
+  padding: 2px 8px;
+  border-radius: 15px;
+  font-size: 0.65rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.ingrediente-nombre {
+  color: #2c3e50;
+}
+
+.ingrediente-cantidad {
+  color: #e67e22;
+  font-weight: 500;
+}
+
+/* Estilos para ingredientes en el modal */
+.detalle-ingredientes {
+  margin: 15px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 15px;
+}
+
+.detalle-ingredientes h3 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.ingredientes-lista-detalle {
+  list-style: none;
+  padding: 0;
+}
+
+.ingredientes-lista-detalle li {
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd;
+  color: #555;
+}
+
+.ingredientes-lista-detalle li:last-child {
+  border-bottom: none;
 }
 
 /* Estilos del modal */
@@ -311,4 +434,4 @@ const volver = () => {
 .btn-cerrar-modal:hover {
   background: #d35400;
 }
-</style>  
+</style>

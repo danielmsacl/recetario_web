@@ -17,7 +17,7 @@
 
     <main class="main-content">
       <div class="container">
-        <!-- RECETA DEL DÍA -->
+        <!-- RECETA DEL DÍA con ingredientes -->
         <div v-if="recetaDelDia" class="receta-dia-card">
           <div class="receta-dia-imagen">
             <img 
@@ -30,6 +30,20 @@
           <div class="receta-dia-info">
             <div class="receta-dia-etiqueta">🌟 Receta del Día 🌟</div>
             <h3>{{ recetaDelDia.titulo }}</h3>
+            
+            <!-- INGREDIENTES DE LA RECETA DEL DÍA -->
+            <div v-if="ingredientesReceta.length" class="receta-dia-ingredientes">
+              <div class="ingredientes-titulo">🥬 Ingredientes:</div>
+              <div class="ingredientes-lista">
+                <div v-for="item in ingredientesReceta" :key="item.id" class="ingrediente-item">
+                  <span class="ingrediente-nombre">{{ item.Ingrediente?.nombre }}</span>
+                  <span class="ingrediente-cantidad">
+                    {{ item.cantidad }} {{ item.unidad || 'u' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
             <p>{{ truncarTexto(recetaDelDia.preparacion, 100) }}</p>
             <button @click="abrirModalDetalle(recetaDelDia)" class="btn-ver-dia">
               Ver receta completa →
@@ -74,7 +88,7 @@
       </div>
     </footer>
 
-    <!-- MODAL DE DETALLE DE RECETA -->
+    <!-- MODAL DE DETALLE DE RECETA con ingredientes -->
     <div v-if="modalDetalleAbierto" class="modal" @click.self="cerrarModalDetalle">
       <div class="modal-content modal-detalle">
         <div class="modal-header">
@@ -90,6 +104,16 @@
           <div class="detalle-dificultad">
             <span class="detalle-icon">{{ getDificultadIcon(recetaDetalle.dificultad) }}</span>
             <span class="detalle-texto">Dificultad: {{ recetaDetalle.dificultad || 'media' }}</span>
+          </div>
+          
+          <!-- INGREDIENTES EN EL MODAL -->
+          <div v-if="ingredientesDetalle.length" class="detalle-ingredientes">
+            <h3>🥬 Ingredientes:</h3>
+            <ul class="ingredientes-lista-detalle">
+              <li v-for="item in ingredientesDetalle" :key="item.id">
+                {{ item.cantidad }} {{ item.unidad || 'u' }} de {{ item.Ingrediente?.nombre }}
+              </li>
+            </ul>
           </div>
           
           <div class="detalle-preparacion">
@@ -215,6 +239,75 @@
 
 .btn-ver-dia:hover {
   background: #d35400;
+}
+
+/* INGREDIENTES */
+.receta-dia-ingredientes {
+  margin: 10px 0;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.ingredientes-titulo {
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+.ingredientes-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.ingrediente-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: white;
+  padding: 2px 8px;
+  border-radius: 15px;
+  font-size: 0.65rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.ingrediente-nombre {
+  color: #2c3e50;
+}
+
+.ingrediente-cantidad {
+  color: #e67e22;
+  font-weight: 500;
+}
+
+.detalle-ingredientes {
+  margin: 15px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 15px;
+}
+
+.detalle-ingredientes h3 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.ingredientes-lista-detalle {
+  list-style: none;
+  padding: 0;
+}
+
+.ingredientes-lista-detalle li {
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd;
+  color: #555;
+}
+
+.ingredientes-lista-detalle li:last-child {
+  border-bottom: none;
 }
 
 /* ============================================ */
@@ -401,6 +494,8 @@ const usuarioActual = ref({ nombre: 'Invitado', email: '', rol: 'usuario' })
 const recetaDiaId = ref('')
 const recetaDelDia = ref(null)
 const listaRecetas = ref([])
+const ingredientesReceta = ref([])
+const ingredientesDetalle = ref([])
 
 // Modal de detalle
 const modalDetalleAbierto = ref(false)
@@ -409,6 +504,17 @@ const recetaDetalle = ref({})
 const esDesarrollador = computed(() => {
   return usuarioActual.value.rol === 'desarrollador' || usuarioActual.value.rol === 'admin'
 })
+
+// Cargar ingredientes de la receta del día
+const cargarIngredientesReceta = async (recetaId) => {
+  try {
+    const res = await fetch(`${API_URL}/api/recetas/${recetaId}/ingredientes`)
+    ingredientesReceta.value = await res.json()
+  } catch (error) {
+    console.error('Error cargando ingredientes:', error)
+    ingredientesReceta.value = []
+  }
+}
 
 const cargarListaRecetas = async () => {
   try {
@@ -427,6 +533,7 @@ const cargarRecetaDelDia = async () => {
     const res = await fetch(`${API_URL}/api/recetas/${idGuardado}`)
     recetaDelDia.value = await res.json()
     recetaDiaId.value = idGuardado
+    await cargarIngredientesReceta(idGuardado)
   } catch (error) {
     console.error('Error cargando receta del día:', error)
   }
@@ -435,6 +542,7 @@ const cargarRecetaDelDia = async () => {
 const cambiarRecetaDia = async () => {
   if (!recetaDiaId.value) {
     recetaDelDia.value = null
+    ingredientesReceta.value = []
     localStorage.removeItem('receta_dia_id')
     return
   }
@@ -443,19 +551,29 @@ const cambiarRecetaDia = async () => {
     const res = await fetch(`${API_URL}/api/recetas/${recetaDiaId.value}`)
     recetaDelDia.value = await res.json()
     localStorage.setItem('receta_dia_id', recetaDiaId.value)
+    await cargarIngredientesReceta(recetaDiaId.value)
   } catch (error) {
     console.error('Error cambiando receta del día:', error)
   }
 }
 
-const abrirModalDetalle = (receta) => {
+const abrirModalDetalle = async (receta) => {
   recetaDetalle.value = receta
+  // Cargar ingredientes para el modal
+  try {
+    const res = await fetch(`${API_URL}/api/recetas/${receta.id}/ingredientes`)
+    ingredientesDetalle.value = await res.json()
+  } catch (error) {
+    console.error('Error cargando ingredientes:', error)
+    ingredientesDetalle.value = []
+  }
   modalDetalleAbierto.value = true
 }
 
 const cerrarModalDetalle = () => {
   modalDetalleAbierto.value = false
   recetaDetalle.value = {}
+  ingredientesDetalle.value = []
 }
 
 const getDificultadIcon = (dificultad) => {
@@ -491,7 +609,6 @@ const irAdminUsuarios = () => {
   navigateTo('/admin/usuarios')
 }
 
-// Nueva función para ir a administrar ingredientes
 const irAdminIngredientes = () => {
   navigateTo('/admin/ingredientes')
 }
