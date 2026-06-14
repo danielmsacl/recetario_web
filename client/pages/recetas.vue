@@ -118,7 +118,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-const { data: recetas, pending, error } = await useFetch('http://localhost:3001/api/recetas')
+const { data: recetas, pending, error } = await useFetch('/api/recetas')
 
 const busqueda = ref('')
 const filtroDificultad = ref('todas')
