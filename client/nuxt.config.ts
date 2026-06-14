@@ -9,10 +9,10 @@ export default defineNuxtConfig({
   ],
   routeRules: {
     '/api/**': {
-      proxy: 'https://recetario-backend.up.railway.app/api/**'
+      proxy: 'https://recetarioweb-production.up.railway.app/api/**'
     },
     '/uploads/**': {
-      proxy: 'https://recetario-backend.up.railway.app/uploads/**'
+      proxy: 'https://recetarioweb-production.up.railway.app/uploads/**'
     }
   }
 })
