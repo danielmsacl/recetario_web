@@ -11,11 +11,6 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING(100),
       allowNull: false,
       unique: true
-    },
-    activo: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true,
-      allowNull: false
     }
   }, {
     tableName: 'ingredientes',

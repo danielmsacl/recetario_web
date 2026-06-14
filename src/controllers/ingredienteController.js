@@ -68,16 +68,25 @@ const remove = async (req, res, next) => {
       return next(error);
     }
     
-    // Verificar si el ingrediente está activo
-    if (ingrediente.activo === true) {
-      const error = new Error('No se puede eliminar un ingrediente activo. Desactívalo primero.');
+    // Verificar si el ingrediente está siendo usado en alguna receta
+    const [result] = await Ingrediente.sequelize.query(`
+      SELECT COUNT(*) as en_uso
+      FROM receta_ingrediente
+      WHERE ingrediente_id = ?
+    `, {
+      replacements: [req.params.id],
+      type: Ingrediente.sequelize.QueryTypes.SELECT
+    });
+    
+    if (result.en_uso > 0) {
+      const error = new Error(`No se puede eliminar "${ingrediente.nombre}" porque está siendo usado en una o más recetas`);
       error.status = 409;
       return next(error);
     }
     
-    // Si está inactivo, eliminar
+    // Si no está en uso, eliminar
     await ingrediente.destroy();
-    res.json({ mensaje: 'Ingrediente eliminado' });
+    res.json({ mensaje: 'Ingrediente eliminado correctamente' });
     
   } catch (error) {
     next(error);
