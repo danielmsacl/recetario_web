@@ -58,6 +58,8 @@
 <script setup>
 import { ref } from 'vue'
 
+const API_URL = 'https://recetarioweb-production.up.railway.app'
+
 const isRightPanelActive = ref(false)
 
 const login = ref({
@@ -80,7 +82,7 @@ const handleLogin = async () => {
   errorLogin.value = ''
   
   try {
-    const response = await fetch('http://localhost:3001/api/auth/login', {
+    const response = await fetch(`${API_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -96,7 +98,7 @@ const handleLogin = async () => {
       localStorage.setItem('usuario', JSON.stringify(data.usuario))
       navigateTo('/principal')
     } else {
-      errorLogin.value = data.error || 'Credenciales inválidas'
+      errorLogin.value = data.error || data.message || 'Credenciales inválidas'
     }
   } catch (err) {
     errorLogin.value = 'Error de conexión con el servidor'
@@ -110,7 +112,7 @@ const handleRegistro = async () => {
   errorRegistro.value = ''
   
   try {
-    const response = await fetch('http://localhost:3001/api/auth/registro', {
+    const response = await fetch(`${API_URL}/api/auth/registro`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -127,7 +129,7 @@ const handleRegistro = async () => {
       registro.value = { nombre: '', email: '', password: '' }
       alert('¡Registro exitoso! Ahora puedes iniciar sesión.')
     } else {
-      errorRegistro.value = data.error || 'Error al registrarse'
+      errorRegistro.value = data.error || data.message || 'Error al registrarse'
     }
   } catch (err) {
     errorRegistro.value = 'Error de conexión con el servidor'

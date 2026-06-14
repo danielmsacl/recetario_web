@@ -128,8 +128,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import { API_URL } from '~/api'
 
-const { data: recetas, pending, error, refresh } = await useFetch('http://localhost:3001/api/recetas')
+const { data: recetas, pending, error, refresh } = await useFetch(`${API_URL}/api/recetas`)
 
 const modalCrearAbierto = ref(false)
 const creando = ref(false)
@@ -171,14 +172,14 @@ const getToken = () => {
 
 const guardarNueva = async () => {
   creando.value = true
-  const token = localStorage.getItem('token')  // ← Obtener token
+  const token = getToken()
   
   try {
-    const response = await fetch('http://localhost:3001/api/recetas', {
+    const response = await fetch(`${API_URL}/api/recetas`, {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`  // ← Agregar token
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(nuevaReceta.value)
     })
@@ -213,7 +214,7 @@ const guardarEdicion = async () => {
   const token = getToken()
   
   try {
-    const response = await fetch(`http://localhost:3001/api/recetas/${recetaEditando.value.id}`, {
+    const response = await fetch(`${API_URL}/api/recetas/${recetaEditando.value.id}`, {
       method: 'PUT',
       headers: { 
         'Content-Type': 'application/json',
@@ -246,7 +247,7 @@ const eliminarReceta = async (id) => {
   if (confirm('¿Estás seguro de eliminar esta receta?')) {
     const token = getToken()
     
-    await fetch(`http://localhost:3001/api/recetas/${id}`, { 
+    await fetch(`${API_URL}/api/recetas/${id}`, { 
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`
