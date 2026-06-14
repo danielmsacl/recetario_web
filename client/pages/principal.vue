@@ -55,7 +55,7 @@
         <div class="hero-compacto">
           <h2 class="hero-title-compacto">Bienvenido, {{ usuarioActual.nombre }}!</h2>
           <button @click="irARecetas" class="btn-hero-compacto">
-            📖 Ver Recetario
+            📖 Ver Todas Las Recetas 📖
           </button>
         </div>
 
@@ -140,7 +140,7 @@
 .hero-compacto {
   text-align: center;
   padding: 60px 20px;
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  background: linear-gradient(135deg, #d6e6f7, #b3b8bd);
   border-radius: 20px;
   margin: 40px 0;
 }
@@ -173,14 +173,14 @@
 .receta-dia-card {
   display: flex;
   background: white;
-  border-radius: 20px;
+  border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.247);
   margin-bottom: 30px;
 }
 
 .receta-dia-imagen {
-  width: 200px;
+  width: 220px;
   background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
   display: flex;
   align-items: center;
@@ -188,8 +188,8 @@
 }
 
 .receta-dia-imagen img {
-  width: 100%;
-  height: 100%;
+  width: 110%;
+  height: 110%;
   object-fit: cover;
 }
 
@@ -209,14 +209,14 @@
   display: inline-block;
   padding: 4px 12px;
   border-radius: 20px;
-  font-size: 0.7rem;
+  font-size: 1.1rem;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
 .receta-dia-info h3 {
-  font-size: 1.5rem;
-  color: #2c3e50;
+  font-size: 1.7rem;
+  color: #000000;
   margin-bottom: 10px;
 }
 
@@ -250,9 +250,9 @@
 }
 
 .ingredientes-titulo {
-  font-size: 0.7rem;
-  font-weight: bold;
-  color: #2c3e50;
+  font-size: 1.2rem;
+  font-weight: bolder;
+  color: #000000;
   margin-bottom: 5px;
 }
 
@@ -266,19 +266,19 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: white;
+  background: rgb(255, 255, 255);
   padding: 2px 8px;
   border-radius: 15px;
-  font-size: 0.65rem;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  font-size: 0.85rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.226);
 }
 
 .ingrediente-nombre {
-  color: #2c3e50;
+  color: #000000;
 }
 
 .ingrediente-cantidad {
-  color: #e67e22;
+  color: #ff7700;
   font-weight: 500;
 }
 
@@ -290,7 +290,7 @@
 }
 
 .detalle-ingredientes h3 {
-  color: #2c3e50;
+  color: #000000;
   margin-bottom: 10px;
   font-size: 1rem;
 }
@@ -303,7 +303,7 @@
 .ingredientes-lista-detalle li {
   padding: 5px 0;
   border-bottom: 1px solid #ddd;
-  color: #555;
+  color: #0c0505;
 }
 
 .ingredientes-lista-detalle li:last-child {

@@ -90,7 +90,7 @@ html, body {
 }
 
 .btn-volver {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(83, 39, 39, 0.555);
   color: white;
   border: none;
   padding: 8px 10px;
@@ -101,7 +101,7 @@ html, body {
 }
 
 .btn-volver:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(53, 30, 30, 0.678);
 }
 
 /* ============================================ */

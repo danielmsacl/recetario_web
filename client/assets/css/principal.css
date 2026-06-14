@@ -59,24 +59,24 @@
 }
 
 .btn-logout {
-  background: rgba(255, 255, 255, 0.25);
-  color: white;
+  background: rgba(80, 73, 73, 0.25);
+  color: rgb(255, 255, 255);
   border: none;
   padding: 6px 14px;
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 0.9rem;
+  font-size: 1.0rem;
 }
 
 .btn-logout:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(78, 43, 43, 0.4);
 }
 
 /* Badge de desarrollador */
 .badge-dev {
   background: #2c3e50;
-  color: #f1c40f;
+  color: #c29e0f;
   padding: 4px 10px;
   border-radius: 20px;
   font-size: 0.8rem;

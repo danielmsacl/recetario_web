@@ -332,7 +332,7 @@ onMounted(async () => {
 }
 
 .modal-contenido {
-  background: rgb(238, 247, 240);
+  background: rgb(196, 199, 196);
   border-radius: 20px;
   width: 90%;
   max-width: 700px;
@@ -404,7 +404,8 @@ onMounted(async () => {
 }
 
 .detalle-preparacion h3 {
-  color: #ffffff;
+  color: #000000;
+  font-size: 1.7rem;
   margin-bottom: 10px;
 }
 
