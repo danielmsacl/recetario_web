@@ -393,7 +393,7 @@ onMounted(async () => {
   align-items: center;
   gap: 8px;
   color: white;
-  background: #4e4a4a;
+  background: #000000;
   padding: 8px 16px;
   border-radius: 30px;
   margin-bottom: 20px;

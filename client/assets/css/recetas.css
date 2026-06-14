@@ -127,7 +127,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #f0f0f0;
+  background: #cccaca;
   padding: 4px 12px;
   border-radius: 20px;
   margin-bottom: 15px;
@@ -139,7 +139,7 @@
 }
 
 .dificultad-texto {
-  color: #27221d;
+  color: #16120e;
   font-weight: 530;
   text-transform: uppercase;
 }
@@ -180,7 +180,7 @@
 }
 
 .loading {
-  color: #e67e22;
+  color: #492506;
 }
 
 .error {
@@ -403,7 +403,7 @@ html, body {
 }
 
 .dificultad-texto {
-  color: #e67e22;
+  color: #ffffff;
   font-weight: 500;
   text-transform: uppercase;
 }
