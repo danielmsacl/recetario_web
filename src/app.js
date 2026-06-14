@@ -6,6 +6,7 @@ const ingredientesRoutes = require('./routes/ingredientesRoutes');
 const usuariosRoutes = require('./routes/usuariosRoutes');
 const authRoutes = require('./routes/authRoutes');
 const cors = require('cors')
+const recetaDelDiaRoutes = require('./routes/recetaDelDiaRoutes');
 
 //middlewares de error
 const notFound = require('./middlewares/notFound');
@@ -31,6 +32,7 @@ app.get('/', (req, res) => {
 app.use('/api', recetasRoutes); 
 app.use('/api', ingredientesRoutes);
 app.use('/api', usuariosRoutes);
+app.use('/api', recetaDelDiaRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
