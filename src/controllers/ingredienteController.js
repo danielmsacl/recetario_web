@@ -67,8 +67,18 @@ const remove = async (req, res, next) => {
       error.status = 404;
       return next(error);
     }
+    
+    // Verificar si el ingrediente está activo
+    if (ingrediente.activo === true) {
+      const error = new Error('No se puede eliminar un ingrediente activo. Desactívalo primero.');
+      error.status = 409;
+      return next(error);
+    }
+    
+    // Si está inactivo, eliminar
     await ingrediente.destroy();
     res.json({ mensaje: 'Ingrediente eliminado' });
+    
   } catch (error) {
     next(error);
   }
