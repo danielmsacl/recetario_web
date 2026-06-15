@@ -18,13 +18,17 @@
         <p v-if="mensaje" class="mensaje">{{ mensaje }}</p>
         <p v-if="errorMsg" class="error-message">{{ errorMsg }}</p>
         
-        <!-- Mostrar enlace si hay token de desarrollo -->
+        <!-- Mostrar enlace si hay token de desarrollo y redirigir automáticamente -->
         <div v-if="devToken" class="dev-link">
           <p>🔗 <strong>Enlace de prueba:</strong></p>
           <a :href="`${API_URL}/restablecer/${devToken}`" target="_blank">
             {{ API_URL }}/restablecer/{{ devToken }}
           </a>
-          <button @click="copiarEnlace" class="btn-copiar">📋 Copiar enlace</button>
+          <div class="botones-enlace">
+            <button @click="irARestablecer" class="btn-restablecer">🔑 Ir a restablecer contraseña</button>
+            <button @click="copiarEnlace" class="btn-copiar">📋 Copiar enlace</button>
+          </div>
+          <p class="redirigiendo" v-if="redirigiendo">⏳ Redirigiendo en {{ contador }} segundos...</p>
         </div>
       </form>
     </div>
@@ -41,6 +45,9 @@ const cargando = ref(false)
 const mensaje = ref('')
 const errorMsg = ref('')
 const devToken = ref('')
+const redirigiendo = ref(false)
+const contador = ref(3)
+let intervalo = null
 
 const solicitarReset = async () => {
   cargando.value = true
@@ -61,6 +68,8 @@ const solicitarReset = async () => {
       mensaje.value = data.mensaje
       if (data.dev_token) {
         devToken.value = data.dev_token
+        // Iniciar redirección automática
+        iniciarRedireccion()
       }
     } else {
       errorMsg.value = data.error || 'Error al enviar la solicitud'
@@ -72,14 +81,35 @@ const solicitarReset = async () => {
   }
 }
 
+const iniciarRedireccion = () => {
+  redirigiendo.value = true
+  contador.value = 3
+  
+  intervalo = setInterval(() => {
+    contador.value--
+    if (contador.value <= 0) {
+      clearInterval(intervalo)
+      irARestablecer()
+    }
+  }, 1000)
+}
+
+const irARestablecer = () => {
+  if (intervalo) clearInterval(intervalo)
+  if (devToken.value) {
+    navigateTo(`/restablecer/${devToken.value}`)
+  }
+}
+
 const volver = () => {
+  if (intervalo) clearInterval(intervalo)
   navigateTo('/')
 }
 
 const copiarEnlace = () => {
   const enlace = `${API_URL}/restablecer/${devToken.value}`
   navigator.clipboard.writeText(enlace)
-  alert('Enlace copiado al portapapeles')
+  alert('✅ Enlace copiado al portapapeles')
 }
 </script>
 
@@ -200,11 +230,47 @@ button[type="submit"]:disabled {
   font-size: 0.8rem;
 }
 
-.btn-copiar {
+.botones-enlace {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
   margin-top: 10px;
-  background: #6c757d;
-  padding: 5px 10px;
+}
+
+.btn-restablecer {
+  background: #e67e22;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
   font-size: 0.8rem;
-  width: auto;
+  transition: background 0.2s;
+}
+
+.btn-restablecer:hover {
+  background: #d35400;
+}
+
+.btn-copiar {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background 0.2s;
+}
+
+.btn-copiar:hover {
+  background: #5a6268;
+}
+
+.redirigiendo {
+  margin-top: 10px;
+  color: #e67e22;
+  font-size: 0.8rem;
+  text-align: center;
 }
 </style>
