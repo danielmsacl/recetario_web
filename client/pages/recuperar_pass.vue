@@ -21,8 +21,8 @@
         <!-- Mostrar enlace si hay token de desarrollo -->
         <div v-if="devToken" class="dev-link">
           <p>🔗 <strong>Enlace de prueba:</strong></p>
-          <a :href="`http://localhost:3000/restablecer/${devToken}`" target="_blank">
-            http://localhost:3000/restablecer/{{ devToken }}
+          <a :href="`${API_URL}/restablecer/${devToken}`" target="_blank">
+            {{ API_URL }}/restablecer/{{ devToken }}
           </a>
           <button @click="copiarEnlace" class="btn-copiar">📋 Copiar enlace</button>
         </div>
@@ -33,6 +33,8 @@
 
 <script setup>
 import { ref } from 'vue'
+
+const API_URL = 'https://recetarioweb-production.up.railway.app'
 
 const email = ref('')
 const cargando = ref(false)
@@ -47,7 +49,7 @@ const solicitarReset = async () => {
   devToken.value = ''
   
   try {
-    const response = await fetch('http://localhost:3001/api/auth/solicitar-reset', {
+    const response = await fetch(`${API_URL}/api/auth/solicitar-reset`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email.value })
@@ -75,7 +77,7 @@ const volver = () => {
 }
 
 const copiarEnlace = () => {
-  const enlace = `http://localhost:3000/restablecer/${devToken.value}`
+  const enlace = `${API_URL}/restablecer/${devToken.value}`
   navigator.clipboard.writeText(enlace)
   alert('Enlace copiado al portapapeles')
 }
