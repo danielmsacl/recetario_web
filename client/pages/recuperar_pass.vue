@@ -24,18 +24,6 @@
           <p>✅ Token generado correctamente</p>
           <p>Redirigiendo en {{ contador }} segundos...</p>
         </div>
-        
-        <!-- Mostrar enlace manual si algo falla -->
-        <div v-if="devToken && !redirigiendo" class="dev-link">
-          <p>🔗 <strong>Enlace de prueba:</strong></p>
-          <a :href="`${FRONTEND_URL}/restablecer/${devToken}`" target="_blank">
-            {{ FRONTEND_URL }}/restablecer/{{ devToken }}
-          </a>
-          <div class="botones-enlace">
-            <button @click="irARestablecer" class="btn-restablecer">🔑 Ir a restablecer contraseña</button>
-            <button @click="copiarEnlace" class="btn-copiar">📋 Copiar enlace</button>
-          </div>
-        </div>
       </form>
     </div>
   </div>
@@ -45,13 +33,11 @@
 import { ref } from 'vue'
 
 const API_URL = 'https://recetarioweb-production.up.railway.app'
-const FRONTEND_URL = 'https://recetario-web-six.vercel.app'
 
 const email = ref('')
 const cargando = ref(false)
 const mensaje = ref('')
 const errorMsg = ref('')
-const devToken = ref('')
 const redirigiendo = ref(false)
 const contador = ref(3)
 let intervalo = null
@@ -60,7 +46,6 @@ const solicitarReset = async () => {
   cargando.value = true
   mensaje.value = ''
   errorMsg.value = ''
-  devToken.value = ''
   redirigiendo.value = false
   
   if (intervalo) clearInterval(intervalo)
@@ -77,7 +62,7 @@ const solicitarReset = async () => {
     if (response.ok) {
       mensaje.value = data.mensaje
       
-      // Si el backend devuelve reset_url, redirigir directamente
+      // Redirigir usando reset_url del backend
       if (data.reset_url) {
         redirigiendo.value = true
         contador.value = 3
@@ -89,11 +74,6 @@ const solicitarReset = async () => {
             window.location.href = data.reset_url
           }
         }, 1000)
-      } 
-      // Fallback con dev_token
-      else if (data.dev_token) {
-        devToken.value = data.dev_token
-        iniciarRedireccion()
       }
     } else {
       errorMsg.value = data.error || 'Error al enviar la solicitud'
@@ -105,35 +85,9 @@ const solicitarReset = async () => {
   }
 }
 
-const iniciarRedireccion = () => {
-  redirigiendo.value = true
-  contador.value = 3
-  
-  intervalo = setInterval(() => {
-    contador.value--
-    if (contador.value <= 0) {
-      clearInterval(intervalo)
-      irARestablecer()
-    }
-  }, 1000)
-}
-
-const irARestablecer = () => {
-  if (intervalo) clearInterval(intervalo)
-  if (devToken.value) {
-    window.location.href = `${FRONTEND_URL}/restablecer/${devToken.value}`
-  }
-}
-
 const volver = () => {
   if (intervalo) clearInterval(intervalo)
   navigateTo('/')
-}
-
-const copiarEnlace = () => {
-  const enlace = `${FRONTEND_URL}/restablecer/${devToken.value}`
-  navigator.clipboard.writeText(enlace)
-  alert('✅ Enlace copiado al portapapeles')
 }
 </script>
 
@@ -263,60 +217,5 @@ button[type="submit"]:disabled {
 .redirigiendo p {
   margin: 5px 0;
   color: #2c3e50;
-}
-
-.dev-link {
-  margin-top: 20px;
-  padding: 15px;
-  background: #f0f0f0;
-  border-radius: 10px;
-  word-break: break-all;
-}
-
-.dev-link p {
-  margin-bottom: 10px;
-  color: #333;
-}
-
-.dev-link a {
-  color: #e67e22;
-  font-size: 0.8rem;
-}
-
-.botones-enlace {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-.btn-restablecer {
-  background: #e67e22;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  transition: background 0.2s;
-}
-
-.btn-restablecer:hover {
-  background: #d35400;
-}
-
-.btn-copiar {
-  background: #6c757d;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  transition: background 0.2s;
-}
-
-.btn-copiar:hover {
-  background: #5a6268;
 }
 </style>
