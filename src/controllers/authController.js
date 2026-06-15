@@ -185,12 +185,17 @@ const solicitarReset = async (req, res, next) => {
       expires_at
     });
     
+    // Obtener la URL del frontend desde variable de entorno
+    const FRONTEND_URL = process.env.FRONTEND_URL || 'https://recetario-web-six.vercel.app';
+    const resetUrl = `${FRONTEND_URL}/restablecer/${token}`;
+    
     console.log(`🔐 Token de restablecimiento para ${email}: ${token}`);
-    console.log(`🔗 URL: http://localhost:3000/restablecer/${token}`);
+    console.log(`🔗 URL: ${resetUrl}`);
     
     res.json({ 
       mensaje: 'Si el email existe, recibirás un enlace de restablecimiento',
-      dev_token: process.env.NODE_ENV === 'development' ? token : undefined
+      dev_token: process.env.NODE_ENV === 'development' ? token : undefined,
+      reset_url: process.env.NODE_ENV === 'development' ? resetUrl : undefined
     });
     
   } catch (error) {

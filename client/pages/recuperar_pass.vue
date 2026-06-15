@@ -18,17 +18,23 @@
         <p v-if="mensaje" class="mensaje">{{ mensaje }}</p>
         <p v-if="errorMsg" class="error-message">{{ errorMsg }}</p>
         
-        <!-- Mostrar enlace si hay token de desarrollo y redirigir automáticamente -->
-        <div v-if="devToken" class="dev-link">
+        <!-- Mostrar progreso de redirección -->
+        <div v-if="redirigiendo" class="redirigiendo">
+          <div class="spinner"></div>
+          <p>✅ Token generado correctamente</p>
+          <p>Redirigiendo en {{ contador }} segundos...</p>
+        </div>
+        
+        <!-- Mostrar enlace manual si algo falla -->
+        <div v-if="devToken && !redirigiendo" class="dev-link">
           <p>🔗 <strong>Enlace de prueba:</strong></p>
-          <a :href="`${API_URL}/restablecer/${devToken}`" target="_blank">
-            {{ API_URL }}/restablecer/{{ devToken }}
+          <a :href="`${FRONTEND_URL}/restablecer/${devToken}`" target="_blank">
+            {{ FRONTEND_URL }}/restablecer/{{ devToken }}
           </a>
           <div class="botones-enlace">
             <button @click="irARestablecer" class="btn-restablecer">🔑 Ir a restablecer contraseña</button>
             <button @click="copiarEnlace" class="btn-copiar">📋 Copiar enlace</button>
           </div>
-          <p class="redirigiendo" v-if="redirigiendo">⏳ Redirigiendo en {{ contador }} segundos...</p>
         </div>
       </form>
     </div>
@@ -39,6 +45,7 @@
 import { ref } from 'vue'
 
 const API_URL = 'https://recetarioweb-production.up.railway.app'
+const FRONTEND_URL = 'https://recetario-web-six.vercel.app'
 
 const email = ref('')
 const cargando = ref(false)
@@ -54,6 +61,9 @@ const solicitarReset = async () => {
   mensaje.value = ''
   errorMsg.value = ''
   devToken.value = ''
+  redirigiendo.value = false
+  
+  if (intervalo) clearInterval(intervalo)
   
   try {
     const response = await fetch(`${API_URL}/api/auth/solicitar-reset`, {
@@ -66,9 +76,23 @@ const solicitarReset = async () => {
     
     if (response.ok) {
       mensaje.value = data.mensaje
-      if (data.dev_token) {
+      
+      // Si el backend devuelve reset_url, redirigir directamente
+      if (data.reset_url) {
+        redirigiendo.value = true
+        contador.value = 3
+        
+        intervalo = setInterval(() => {
+          contador.value--
+          if (contador.value <= 0) {
+            clearInterval(intervalo)
+            window.location.href = data.reset_url
+          }
+        }, 1000)
+      } 
+      // Fallback con dev_token
+      else if (data.dev_token) {
         devToken.value = data.dev_token
-        // Iniciar redirección automática
         iniciarRedireccion()
       }
     } else {
@@ -97,7 +121,7 @@ const iniciarRedireccion = () => {
 const irARestablecer = () => {
   if (intervalo) clearInterval(intervalo)
   if (devToken.value) {
-    navigateTo(`/restablecer/${devToken.value}`)
+    window.location.href = `${FRONTEND_URL}/restablecer/${devToken.value}`
   }
 }
 
@@ -107,7 +131,7 @@ const volver = () => {
 }
 
 const copiarEnlace = () => {
-  const enlace = `${API_URL}/restablecer/${devToken.value}`
+  const enlace = `${FRONTEND_URL}/restablecer/${devToken.value}`
   navigator.clipboard.writeText(enlace)
   alert('✅ Enlace copiado al portapapeles')
 }
@@ -212,6 +236,35 @@ button[type="submit"]:disabled {
   text-align: center;
 }
 
+/* Estilos de redirección */
+.redirigiendo {
+  margin-top: 20px;
+  padding: 15px;
+  background: #e8f5e9;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #27ae60;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.redirigiendo p {
+  margin: 5px 0;
+  color: #2c3e50;
+}
+
 .dev-link {
   margin-top: 20px;
   padding: 15px;
@@ -265,12 +318,5 @@ button[type="submit"]:disabled {
 
 .btn-copiar:hover {
   background: #5a6268;
-}
-
-.redirigiendo {
-  margin-top: 10px;
-  color: #e67e22;
-  font-size: 0.8rem;
-  text-align: center;
 }
 </style>
