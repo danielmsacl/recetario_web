@@ -17,13 +17,6 @@
         
         <p v-if="mensaje" class="mensaje">{{ mensaje }}</p>
         <p v-if="errorMsg" class="error-message">{{ errorMsg }}</p>
-        
-        <!-- Mostrar progreso de redirección -->
-        <div v-if="redirigiendo" class="redirigiendo">
-          <div class="spinner"></div>
-          <p>✅ Token generado correctamente</p>
-          <p>Redirigiendo en {{ contador }} segundos...</p>
-        </div>
       </form>
     </div>
   </div>
@@ -38,17 +31,11 @@ const email = ref('')
 const cargando = ref(false)
 const mensaje = ref('')
 const errorMsg = ref('')
-const redirigiendo = ref(false)
-const contador = ref(3)
-let intervalo = null
 
 const solicitarReset = async () => {
   cargando.value = true
   mensaje.value = ''
   errorMsg.value = ''
-  redirigiendo.value = false
-  
-  if (intervalo) clearInterval(intervalo)
   
   try {
     const response = await fetch(`${API_URL}/api/auth/solicitar-reset`, {
@@ -61,20 +48,6 @@ const solicitarReset = async () => {
     
     if (response.ok) {
       mensaje.value = data.mensaje
-      
-      // Redirigir usando reset_url del backend
-      if (data.reset_url) {
-        redirigiendo.value = true
-        contador.value = 3
-        
-        intervalo = setInterval(() => {
-          contador.value--
-          if (contador.value <= 0) {
-            clearInterval(intervalo)
-            window.location.href = data.reset_url
-          }
-        }, 1000)
-      }
     } else {
       errorMsg.value = data.error || 'Error al enviar la solicitud'
     }
@@ -86,7 +59,6 @@ const solicitarReset = async () => {
 }
 
 const volver = () => {
-  if (intervalo) clearInterval(intervalo)
   navigateTo('/')
 }
 </script>
