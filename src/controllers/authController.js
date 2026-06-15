@@ -189,13 +189,13 @@ const solicitarReset = async (req, res, next) => {
     const FRONTEND_URL = process.env.FRONTEND_URL || 'https://recetario-web-six.vercel.app';
     const resetUrl = `${FRONTEND_URL}/restablecer/${token}`;
     
+    // Mostrar SOLO en consola del servidor (Railway logs)
     console.log(`🔐 Token de restablecimiento para ${email}: ${token}`);
-    console.log(`🔗 URL: ${resetUrl}`);
+    console.log(`🔗 URL para restablecer contraseña: ${resetUrl}`);
     
+    // No devolver el token al frontend por seguridad
     res.json({ 
-      mensaje: 'Si el email existe, recibirás un enlace de restablecimiento',
-      dev_token: process.env.NODE_ENV === 'development' ? token : undefined,
-      reset_url: process.env.NODE_ENV === 'development' ? resetUrl : undefined
+      mensaje: 'Si el email existe, recibirás un enlace de restablecimiento'
     });
     
   } catch (error) {
